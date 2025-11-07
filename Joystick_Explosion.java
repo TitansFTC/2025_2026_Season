@@ -36,7 +36,7 @@ public class Joystick_Explosion extends OpMode {
     private DcMotorEx leftBack = null;
     private DcMotorEx yeeterA = null;
     private DcMotorEx yeeterB = null;
-    private double yeeterPower = 0.3;
+    private double yeeterPower = 0.325;
     private DcMotorEx intakeA = null;
     //private CRServo intakeB =null;
     private CRServo feederA = null;
@@ -48,13 +48,15 @@ public class Joystick_Explosion extends OpMode {
     private double motorFraction = 0.8;
     private int debounce = 0;
     private double integralSum = 0;
-    private double Kp = 0.1;
+    private double Kp = 0.00035;
     private double Ki = 0;
     private double Kd = 0;
     private double yeeterReference = 800;
     ElapsedTime timer = new ElapsedTime();
     private double lastError = 0;
     private boolean yeeterActive = false;
+    private boolean previousY = false;
+    private double remain;
 
 
     @Override
@@ -78,6 +80,7 @@ public class Joystick_Explosion extends OpMode {
         leftBack.setDirection(DcMotorSimple.Direction.REVERSE);
         rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
         leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
+        yeeterB.setDirection(DcMotorSimple.Direction.REVERSE);
 
 
     }
@@ -100,11 +103,9 @@ public class Joystick_Explosion extends OpMode {
         double rightBackPower = (gamepad1.left_stick_y - gamepad1.right_stick_x ) + gamepad1.left_stick_x;
         double motorSpeed = 1.0;
         if (gamepad1.right_trigger > 0.8){
-            motorSpeed = 0.5;
-        }
-        if (gamepad1.right_bumper){
             motorFraction = 0.5;
         }
+
         leftFront.setPower(leftFrontPower * motorSpeed * motorFraction);
         rightFront.setPower(rightFrontPower * motorSpeed * motorFraction);
         leftBack.setPower(leftBackPower * motorSpeed * motorFraction);
@@ -118,8 +119,8 @@ public class Joystick_Explosion extends OpMode {
         else if (gamepad2.dpad_down && debounce == 0) {
             yeeterReference -= 10;
         }
-        double yeeterPowerA = PIDControl(yeeterReference, yeeterA.getVelocity());
-        double yeeterPowerB = PIDControl(-yeeterReference, yeeterB.getVelocity());
+        double yeeterPowerA = PIDControl(yeeterReference, yeeterB.getVelocity());
+        double yeeterPowerB = 0;//PIDControl(yeeterReference, yeeterB.getVelocity());
 
         debounce = (debounce + 1) % 20;
 
@@ -133,13 +134,20 @@ public class Joystick_Explosion extends OpMode {
             feederB.setPower(0);
             feederC.setPower(0);
         }
-        if(gamepad2.y && debounce == 0){
+        if(gamepad2.right_trigger > 0.9){
+            yeeterPower = 0.5;
+        }
+        else{
+            yeeterPower = PIDControl(yeeterReference, yeeterB.getVelocity());
+        }
+        if(gamepad2.y && !previousY  ){
             yeeterActive = !yeeterActive;
         }
+        previousY = gamepad2.y;
 
-        if(gamepad2.y || gamepad2.b) {
-            yeeterA.setPower(0.325);
-            yeeterB.setPower(-0.325);
+        if(yeeterActive || gamepad2.b) {
+            yeeterA.setPower(yeeterPower);
+            yeeterB.setPower(yeeterPower);
         }
         else {
             yeeterA.setPower(0);
@@ -155,6 +163,7 @@ public class Joystick_Explosion extends OpMode {
             feederA.setPower(0);
             feederB.setPower(0);
         }
+
 
 
         /* if(gamepad1.a) {
@@ -205,6 +214,7 @@ public class Joystick_Explosion extends OpMode {
         dashboardTelemetry.addData("yeeterPowerB", yeeterPowerB);
         dashboardTelemetry.addData("intakePower", intakePower);
         dashboardTelemetry.addData("debounce", debounce);
+        dashboardTelemetry.addData("remain", remain);
 
         dashboardTelemetry.update();
 
@@ -229,7 +239,7 @@ public class Joystick_Explosion extends OpMode {
         rightFront.setPower(0);
     }
     public double PIDControl(double reference, double state) {
-        double error = reference - state;
+        /*double error = reference - state;
         integralSum += error * timer.seconds();
         double derivative = (error - lastError) / timer.seconds();
         lastError = error;
@@ -238,6 +248,15 @@ public class Joystick_Explosion extends OpMode {
 
         double output = (error * Kp) + (derivative * Kd) + (integralSum * Ki);
         return output;
+        */
+        double output=.3;
+         remain=reference-state;
+         if (remain <0){
+             output=.3+remain*.000375;
+         }else if(remain > 0){
+             output=.3-remain*.000375;
+         }
+        return(output);
     }
 
 }
