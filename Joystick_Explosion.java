@@ -48,12 +48,13 @@ public class Joystick_Explosion extends OpMode {
     private double motorFraction = 0.8;
     private int debounce = 0;
     private double integralSum = 0;
-    private double Kp = 0.00035;
+    private double Kp = 0.005;
     private double Ki = 0;
     private double Kd = 0;
     private double yeeterReference = 800;
     ElapsedTime timer = new ElapsedTime();
-    private double lastError = 0;
+    private double lastErrorA = 0;
+    private double lastErrorB=0;
     private boolean yeeterActive = false;
     private boolean previousY = false;
     private double remain;
@@ -81,6 +82,11 @@ public class Joystick_Explosion extends OpMode {
         rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
         leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
         yeeterB.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        yeeterA.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        yeeterB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+
 
 
     }
@@ -119,8 +125,10 @@ public class Joystick_Explosion extends OpMode {
         else if (gamepad2.dpad_down && debounce == 0) {
             yeeterReference -= 10;
         }
-        double yeeterPowerA = PIDControl(yeeterReference, yeeterB.getVelocity());
-        double yeeterPowerB = 0;//PIDControl(yeeterReference, yeeterB.getVelocity());
+        double yeeterPowerB = PIDControlB(yeeterReference, -yeeterB.getVelocity());
+        //double yeeterPowerB = PIDControl(-yeeterReference, yeeterB.getVelocity());
+        double yeeterPowerA = PIDControlA(yeeterReference, -yeeterA .getVelocity()); //yeeterPowerB;
+
 
         debounce = (debounce + 1) % 20;
 
@@ -134,20 +142,15 @@ public class Joystick_Explosion extends OpMode {
             feederB.setPower(0);
             feederC.setPower(0);
         }
-        if(gamepad2.right_trigger > 0.9){
-            yeeterPower = 0.5;
-        }
-        else{
-            yeeterPower = PIDControl(yeeterReference, yeeterB.getVelocity());
-        }
+
         if(gamepad2.y && !previousY  ){
             yeeterActive = !yeeterActive;
         }
         previousY = gamepad2.y;
 
         if(yeeterActive || gamepad2.b) {
-            yeeterA.setPower(yeeterPower);
-            yeeterB.setPower(yeeterPower);
+            yeeterA.setPower(yeeterPowerA);
+            yeeterB.setPower(yeeterPowerB);
         }
         else {
             yeeterA.setPower(0);
@@ -206,7 +209,7 @@ public class Joystick_Explosion extends OpMode {
             feederC.setPower(0);
         }*/
         dashboardTelemetry.addData("yeeterA velocity", yeeterA.getVelocity());
-        dashboardTelemetry.addData("yeeterB velocity", -yeeterB.getVelocity());
+        dashboardTelemetry.addData("yeeterB velocity", yeeterB.getVelocity());
         dashboardTelemetry.addData("leftBackPower", leftBackPower);
         dashboardTelemetry.addData("leftFrontPower", leftFrontPower);
         dashboardTelemetry.addData("rightFrontPower", rightFrontPower);
@@ -238,25 +241,33 @@ public class Joystick_Explosion extends OpMode {
         rightBack.setPower(0);
         rightFront.setPower(0);
     }
-    public double PIDControl(double reference, double state) {
-        /*double error = reference - state;
+    public double PIDControlB(double reference, double state) {
+        double error = reference - state;
         integralSum += error * timer.seconds();
-        double derivative = (error - lastError) / timer.seconds();
-        lastError = error;
+        double derivative = (error - lastErrorB) / timer.seconds();
+        lastErrorB = error;
+        dashboardTelemetry.addData("error", error);
+        dashboardTelemetry.addData("reference", reference);
+    dashboardTelemetry.addData("state", state);
 
         timer.reset();
 
         double output = (error * Kp) + (derivative * Kd) + (integralSum * Ki);
         return output;
-        */
-        double output=.3;
-         remain=reference-state;
-         if (remain <0){
-             output=.3+remain*.000375;
-         }else if(remain > 0){
-             output=.3-remain*.000375;
-         }
-        return(output);
+    }
+    public double PIDControlA(double reference, double state) {
+        double error = reference - state;
+        integralSum += error * timer.seconds();
+        double derivative = (error - lastErrorA) / timer.seconds();
+        lastErrorA = error;
+        dashboardTelemetry.addData("error", error);
+        dashboardTelemetry.addData("reference", reference);
+        dashboardTelemetry.addData("state", state);
+
+        timer.reset();
+
+        double output = (error * Kp) + (derivative * Kd) + (integralSum * Ki);
+        return output;
     }
 
 }
