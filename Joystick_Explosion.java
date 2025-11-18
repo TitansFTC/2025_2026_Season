@@ -210,9 +210,6 @@ public class Joystick_Explosion extends OpMode {
         }*/
         dashboardTelemetry.addData("yeeterA velocity", yeeterA.getVelocity());
         dashboardTelemetry.addData("yeeterB velocity", yeeterB.getVelocity());
-        dashboardTelemetry.addData("leftBackPower", leftBackPower);
-        dashboardTelemetry.addData("leftFrontPower", leftFrontPower);
-        dashboardTelemetry.addData("rightFrontPower", rightFrontPower);
         dashboardTelemetry.addData("yeeterPowerA", yeeterPowerA);
         dashboardTelemetry.addData("yeeterPowerB", yeeterPowerB);
         dashboardTelemetry.addData("intakePower", intakePower);
