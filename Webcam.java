@@ -15,11 +15,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Webcam {
+
     private AprilTagProcessor aprilTagProcessor;
     private VisionPortal visionPortal;
     private List<AprilTagDetection> detectedTags = new ArrayList<>();
     private Telemetry telemetry;
-    public void init(HardwareMap hwMap, Telemetry telemetry){
+
+    public Webcam(HardwareMap hwMap, Telemetry telemetry){
         this.telemetry=telemetry;
         aprilTagProcessor=new AprilTagProcessor.Builder()
                 .setDrawTagID(true)
@@ -60,6 +62,12 @@ public class Webcam {
             }
         }
         return null;
+    }
+    public void loop(Telemetry telemetry) {
+        update();
+        for(AprilTagDetection detection: detectedTags){
+            telemetry.addData(Integer.toString(detection.id), detection.toString());
+        }
     }
     public void stop(){
         if (visionPortal != null){
