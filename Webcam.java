@@ -66,7 +66,7 @@ public class Webcam {
     public void loop(Telemetry telemetry) {
         update();
         for(AprilTagDetection detection: detectedTags){
-            telemetry.addData(Integer.toString(detection.id), detection.toString());
+            telemetry.addData(Integer.toString(detection.id), String.format("XYZ %6.1f %6.1f %6.1f  (inch)", detection.ftcPose.x, detection.ftcPose.y, detection.ftcPose.z));
         }
     }
     public void stop(){

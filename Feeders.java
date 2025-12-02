@@ -22,7 +22,7 @@ public class Feeders {
         //Activate feeder servos if x or b is pressed
         double feederPower = 0;
         if (gamepad.x || gamepad.b) {
-            feederPower = 1;
+            feederPower = -1; //flipped during reconstruction
         }
         feederA.setPower(feederPower);
         feederB.setPower(feederPower);

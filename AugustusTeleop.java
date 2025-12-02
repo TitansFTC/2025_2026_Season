@@ -58,6 +58,7 @@ public class AugustusTeleop extends OpMode {
         driveBase.stop();
         intake.stop();
         feeders.stop();
+
         yeeters.stop();
     }
 }
