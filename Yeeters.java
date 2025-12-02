@@ -13,7 +13,6 @@ public class Yeeters {
     private DcMotorEx yeeterLeft = null;
     private DcMotorEx yeeterRight = null;
     private boolean yeeterActive = false;
-    private boolean yeeterPreviousButton = false;
     private double yeeterVelocityTarget = 800;
 
     public  Yeeters(HardwareMap hardwareMap) {
@@ -28,12 +27,12 @@ public class Yeeters {
 
     public void loop(Gamepad gamepad, Telemetry telemetry) {
         // Toggle yeeter active based on Y button and previous button state
-        if(gamepad.y && !yeeterPreviousButton){
+        if(gamepad.yWasPressed()){
             yeeterActive = !yeeterActive;
         }
 
         // Update previous button state
-        yeeterPreviousButton = gamepad.y;
+
 
         // Set yeeter powers if active or B button is pressed using proportional
         double yeeterLeftPower = 0;
