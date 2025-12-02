@@ -11,6 +11,8 @@ public class Feeders {
     private CRServo feederA = null;
     private CRServo feederB = null;
     private CRServo feederC = null;
+
+
     private CRServo feederD = null;
 
     public Feeders(HardwareMap hardwareMap) {
@@ -23,17 +25,17 @@ public class Feeders {
     public void loop(Gamepad gamepad, Telemetry telemetry) {
         //Activate feeder servos if x or b is pressed
         double feederPower = 0;
-        double launcerFeederPower = 0;
+        double launcherFeederPower = 0;
         if (gamepad.x || gamepad.b) {
             feederPower = -1; //flipped during reconstruction
         }
         if (gamepad.b){
-            launcerFeederPower = -1;
+            launcherFeederPower = 1;
         }
         feederA.setPower(feederPower);
         feederB.setPower(feederPower);
         feederC.setPower(feederPower);
-        feederD.setPower(launcerFeederPower);
+        feederD.setPower(launcherFeederPower);
 
         //add telemetry
         telemetry.addData("feederPower", feederPower);
@@ -44,5 +46,6 @@ public class Feeders {
         feederA.setPower(0);
         feederB.setPower(0);
         feederC.setPower(0);
+        feederD.setPower(0);
     }
 }
