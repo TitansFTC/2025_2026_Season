@@ -8,7 +8,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class DriveBase {
     private static final double FAST_POWER_FRACTION = 0.8;
-    private static final double SLOW_POWER_FRACTION = 0.4;
+    private static final double SLOW_POWER_FRACTION = 0.2;
 
     private DcMotorEx leftFront = null;
     private DcMotorEx leftBack = null;
@@ -64,5 +64,12 @@ public class DriveBase {
         leftBack.setPower(0);
         rightFront.setPower(0);
         rightBack.setPower(0);
+    }
+
+    public void moveForward () {
+        leftFront.setPower(SLOW_POWER_FRACTION);
+        leftBack.setPower(SLOW_POWER_FRACTION);
+        rightFront.setPower(SLOW_POWER_FRACTION);
+        rightBack.setPower(SLOW_POWER_FRACTION);
     }
 }
