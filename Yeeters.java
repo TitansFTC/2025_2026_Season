@@ -9,11 +9,16 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class Yeeters {
     private static final double kP = 0.005;
+    private static final double alpha = 801.76;
+    private static final double beta = 1.789;
+    private static final double yeeterDefaultVelocity = 900;
 
     private DcMotorEx yeeterLeft = null;
     private DcMotorEx yeeterRight = null;
     private boolean yeeterActive = false;
-    private double yeeterVelocityTarget = 800;
+    private double yeeterTargetVelocity = yeeterDefaultVelocity;
+
+    private int debounce = 0;
 
     public  Yeeters(HardwareMap hardwareMap) {
         // Get yeeters from hardware map
@@ -22,30 +27,44 @@ public class Yeeters {
 
         // Reverse direction of right Yeeter
         yeeterRight.setDirection(DcMotorSimple.Direction.REVERSE);
-
     }
 
-    public void loop(Gamepad gamepad, Telemetry telemetry) {
+    public void loop(Gamepad gamepad, Telemetry telemetry, double distance) {
         // Toggle yeeter active based on Y button and previous button state
-        if(gamepad.yWasPressed()){
+        if (gamepad.yWasPressed()){
             yeeterActive = !yeeterActive;
         }
 
-        // Update previous button state
+        if (distance == 0){
+            yeeterTargetVelocity = yeeterDefaultVelocity;
+        }else {
+            // Automatic Target Velocity using Linear Regression
+            yeeterTargetVelocity = computeYeeterVelocity(distance);
+        }
 
+        // Adjust Target Velocity
+        /*if (gamepad.dpad_up && debounce == 0) {
+            yeeterTargetVelocity += 10;
+        } else if (gamepad.dpad_down && debounce == 0) {
+            yeeterTargetVelocity -= 10;
+        }*/
+
+        debounce = (debounce + 1) % 60;
 
         // Set yeeter powers if active or B button is pressed using proportional
         double yeeterLeftPower = 0;
         double yeeterRightPower = 0;
         if (yeeterActive || gamepad.b ) {
-          yeeterLeftPower = (yeeterVelocityTarget - yeeterLeft.getVelocity()) * kP;
-          yeeterRightPower = (yeeterVelocityTarget - yeeterRight.getVelocity()) * kP;
+          yeeterLeftPower = (yeeterTargetVelocity - yeeterLeft.getVelocity()) * kP;
+          yeeterRightPower = (yeeterTargetVelocity - yeeterRight.getVelocity()) * kP;
         }
 
         yeeterLeft.setPower(yeeterLeftPower);
         yeeterRight.setPower(yeeterRightPower);
 
         //add T
+        telemetry.addData("distance", distance);
+        telemetry.addData("yeeterTargetVelocity", yeeterTargetVelocity);
         telemetry.addData("yeeterRightVelocity", yeeterRight.getVelocity());
         telemetry.addData("yeeterLeftVelocity", yeeterLeft.getVelocity());
         telemetry.addData("yeeterRightPower", yeeterRightPower);
@@ -55,5 +74,13 @@ public class Yeeters {
         //stop all motors
         yeeterLeft.setPower(0);
         yeeterRight.setPower(0);
+    }
+
+    public void toggleYeeters() {
+        yeeterActive = !yeeterActive;
+    }
+
+    public double computeYeeterVelocity(double distance) {
+        return alpha + beta*distance;
     }
 }
