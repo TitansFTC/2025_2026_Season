@@ -42,12 +42,13 @@ public class AugustusTeleop extends OpMode {
         driveBase.loop(gamepad1, dashboardTelemetry);
 
         // Loop IFY with gamepad2
+        webcam.loop(dashboardTelemetry);
         intake.loop(gamepad2, dashboardTelemetry);
         feeders.loop(gamepad2, dashboardTelemetry);
-        yeeters.loop(gamepad2, dashboardTelemetry);
+        yeeters.loop(gamepad2, dashboardTelemetry, webcam.getTargetDistance());
 
         //Update A tags
-        webcam.loop(dashboardTelemetry);
+
         //update dashboard
         dashboardTelemetry.update();
     }
