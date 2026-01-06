@@ -56,6 +56,7 @@ public class Webcam {
         }
     }
     public AprilTagDetection getTagBySpecificId(int id){
+
         for(AprilTagDetection detection: detectedTags){
             if(detection.id==id){
                 return detection;
@@ -68,6 +69,15 @@ public class Webcam {
         for(AprilTagDetection detection: detectedTags){
             telemetry.addData(Integer.toString(detection.id), String.format("XYZ %6.1f %6.1f %6.1f  (inch)", detection.ftcPose.x, detection.ftcPose.y, detection.ftcPose.z));
         }
+    }
+    public double getTargetDistance() {
+        for(AprilTagDetection detection: detectedTags){
+            //red goal: 24, blue goal: 20
+            if (detection.id == 24 || detection.id == 20) {
+                return detection.ftcPose.y;
+            }
+        }
+        return 0;
     }
     public void stop(){
         if (visionPortal != null){
