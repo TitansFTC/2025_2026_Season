@@ -73,6 +73,13 @@ public class DriveBase {
         rightBack.setPower(SLOW_POWER_FRACTION);
     }
 
+    public void moveBackward() {
+        leftFront.setPower(-SLOW_POWER_FRACTION);
+        leftBack.setPower(-SLOW_POWER_FRACTION);
+        rightFront.setPower(-SLOW_POWER_FRACTION);
+        rightBack.setPower(-SLOW_POWER_FRACTION);
+    }
+
     public void rotateRight() {
         leftFront.setPower(-FAST_POWER_FRACTION);
         leftBack.setPower(FAST_POWER_FRACTION);

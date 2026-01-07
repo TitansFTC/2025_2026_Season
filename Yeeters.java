@@ -9,14 +9,20 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class Yeeters {
     private static final double kP = 0.005;
-    private static final double alpha = 801.76;
-    private static final double beta = 1.789;
+    private static final double kI = 0.00001;
+    private static final double kD = 0.000001;
+
+    private static final double alpha = 800;
+    private static final double beta = 1.7;
     private static final double yeeterDefaultVelocity = 900;
 
     private DcMotorEx yeeterLeft = null;
     private DcMotorEx yeeterRight = null;
     private boolean yeeterActive = false;
     private double yeeterTargetVelocity = yeeterDefaultVelocity;
+
+    private PID yeeterLeftPID = new PID(kP, kI, kD);
+    private PID yeeterRightPID = new PID(kP, kI, kD);
 
     private int debounce = 0;
 
@@ -37,7 +43,7 @@ public class Yeeters {
 
         if (distance == 0){
             yeeterTargetVelocity = yeeterDefaultVelocity;
-        }else {
+        } else {
             // Automatic Target Velocity using Linear Regression
             yeeterTargetVelocity = computeYeeterVelocity(distance);
         }
@@ -55,8 +61,8 @@ public class Yeeters {
         double yeeterLeftPower = 0;
         double yeeterRightPower = 0;
         if (yeeterActive || gamepad.b ) {
-          yeeterLeftPower = (yeeterTargetVelocity - yeeterLeft.getVelocity()) * kP;
-          yeeterRightPower = (yeeterTargetVelocity - yeeterRight.getVelocity()) * kP;
+          yeeterLeftPower = yeeterLeftPID.update(yeeterTargetVelocity, yeeterLeft.getVelocity());
+          yeeterRightPower = yeeterRightPID.update(yeeterTargetVelocity, yeeterRight.getVelocity());
         }
 
         yeeterLeft.setPower(yeeterLeftPower);

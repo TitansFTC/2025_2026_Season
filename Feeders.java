@@ -24,24 +24,31 @@ public class Feeders {
 
     public void loop(Gamepad gamepad, Telemetry telemetry) {
         //Activate feeder servos if x or b is pressed
-        double feederPower = 0;
-        double launcherFeederPower = 0;
+        double feederAPower = 0;
+        double feederBPower = 0;
+        double feederCPower = 0;
+        double feederDPower = 0;
 
-        if (gamepad.x || gamepad.b) {
-            feederPower = -1; //flipped during reconstruction
+        if (gamepad.a || gamepad.b) {
+            feederAPower = -1; //flipped during reconstruction
+            feederBPower = -1;
         }
 
         if (gamepad.b){
-            launcherFeederPower = 1;
+            feederCPower = -1;
+            feederDPower = 1;
         }
 
-        feederA.setPower(feederPower);
-        feederB.setPower(feederPower);
-        feederC.setPower(feederPower);
-        feederD.setPower(launcherFeederPower);
+        feederA.setPower(feederAPower);
+        feederB.setPower(feederBPower);
+        feederC.setPower(feederCPower);
+        feederD.setPower(feederDPower);
 
         //add telemetry
-        telemetry.addData("feederPower", feederPower);
+        telemetry.addData("feederAPower", feederAPower );
+        telemetry.addData("feederBPower" , feederBPower);
+        telemetry.addData("feederCPower" , feederCPower);
+        telemetry.addData("feederDPower", feederDPower);
     }
 
     public void enableFeeders() {
