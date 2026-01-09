@@ -10,11 +10,11 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 public class Yeeters {
     private static final double kP = 0.005;
     private static final double kI = 0.00001;
-    private static final double kD = 0.000001;
+    private static final double kD = 0;
 
-    private static final double alpha = 800;
-    private static final double beta = 1.7;
-    private static final double yeeterDefaultVelocity = 900;
+    private static final double alpha = 586.86;
+    private static final double beta = 5.17;
+    private static final double yeeterDefaultVelocity = 850;
 
     private DcMotorEx yeeterLeft = null;
     private DcMotorEx yeeterRight = null;
@@ -49,12 +49,13 @@ public class Yeeters {
         }
 
         // Adjust Target Velocity
-        /*if (gamepad.dpad_up && debounce == 0) {
-            yeeterTargetVelocity += 10;
+      /*  if (gamepad.dpad_up && debounce == 0) {
+            yeeterTargetVelocity += 25;
         } else if (gamepad.dpad_down && debounce == 0) {
-            yeeterTargetVelocity -= 10;
-        }*/
+            yeeterTargetVelocity -= 25;
+        }
 
+       */
         debounce = (debounce + 1) % 60;
 
         // Set yeeter powers if active or B button is pressed using proportional
@@ -64,6 +65,8 @@ public class Yeeters {
           yeeterLeftPower = yeeterLeftPID.update(yeeterTargetVelocity, yeeterLeft.getVelocity());
           yeeterRightPower = yeeterRightPID.update(yeeterTargetVelocity, yeeterRight.getVelocity());
         }
+
+
 
         yeeterLeft.setPower(yeeterLeftPower);
         yeeterRight.setPower(yeeterRightPower);
