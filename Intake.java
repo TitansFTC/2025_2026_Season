@@ -32,6 +32,11 @@ public class Intake {
         telemetry.addData("intakePower", intakePower);
     }
 
+    public void enableIntake(){
+        intake.setPower(1);
+    }
+
+
     public void stop() {
         //stop all motors
         intake.setPower(0);

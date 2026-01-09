@@ -32,10 +32,10 @@ public class Feeders {
         if (gamepad.a || gamepad.b) {
             feederAPower = -1; //flipped during reconstruction
             feederBPower = -1;
+            feederCPower = -1;
         }
 
         if (gamepad.b){
-            feederCPower = -1;
             feederDPower = 1;
         }
 

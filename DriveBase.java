@@ -7,8 +7,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class DriveBase {
-    private static final double FAST_POWER_FRACTION = 0.8;
-    private static final double SLOW_POWER_FRACTION = 0.2;
+    public static final double FAST_POWER_FRACTION = 0.8;
+    public static final double SLOW_POWER_FRACTION = 0.2;
 
     private DcMotorEx leftFront = null;
     private DcMotorEx leftBack = null;
@@ -66,24 +66,51 @@ public class DriveBase {
         rightBack.setPower(0);
     }
 
-    public void moveForward() {
-        leftFront.setPower(SLOW_POWER_FRACTION);
-        leftBack.setPower(SLOW_POWER_FRACTION);
-        rightFront.setPower(SLOW_POWER_FRACTION);
-        rightBack.setPower(SLOW_POWER_FRACTION);
+    public void moveForward(double power, int duration) {
+        leftFront.setPower(power);
+        leftBack.setPower(power);
+        rightFront.setPower(power);
+        rightBack.setPower(power);
+
+        try {
+            Thread.sleep(duration);
+        } catch (InterruptedException e) {
+        }
     }
 
-    public void moveBackward() {
-        leftFront.setPower(-SLOW_POWER_FRACTION);
-        leftBack.setPower(-SLOW_POWER_FRACTION);
-        rightFront.setPower(-SLOW_POWER_FRACTION);
-        rightBack.setPower(-SLOW_POWER_FRACTION);
+    public void moveBackward(double power, int duration) {
+        leftFront.setPower(-power);
+        leftBack.setPower(-power);
+        rightFront.setPower(-power);
+        rightBack.setPower(-power);
+
+        try {
+            Thread.sleep(duration);
+        } catch (InterruptedException e) {
+        }
     }
 
-    public void rotateRight() {
-        leftFront.setPower(-FAST_POWER_FRACTION);
-        leftBack.setPower(FAST_POWER_FRACTION);
-        rightFront.setPower(-FAST_POWER_FRACTION);
-        rightBack.setPower(FAST_POWER_FRACTION);
+    public void rotateRight(double power, int duration) {
+        leftFront.setPower(-power);
+        leftBack.setPower(power);
+        rightFront.setPower(-power);
+        rightBack.setPower(power);
+
+        try {
+            Thread.sleep(duration);
+        } catch (InterruptedException e) {
+        }
+    }
+
+    public void rotateLeft(double power, int duration) {
+        leftFront.setPower(power);
+        leftBack.setPower(-power);
+        rightFront.setPower(power);
+        rightBack.setPower(-power);
+
+        try {
+            Thread.sleep(duration);
+        } catch (InterruptedException e) {
+        }
     }
 }
