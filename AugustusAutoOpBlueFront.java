@@ -7,8 +7,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-@Autonomous(name="AugustusAutoOpRedFront", group = "Titan's AutoOp")
-public class AugustusAutoOpRedFront extends LinearOpMode {
+@Autonomous(name="AugustusAutoOpBlueFront", group = "Titan's AutoOp")
+public class AugustusAutoOpBlueFront extends LinearOpMode {
 
     private DriveBase driveBase = null;
     private Intake intake = null;
@@ -63,7 +63,22 @@ public class AugustusAutoOpRedFront extends LinearOpMode {
             yeeters.loop(gamepad1, dashboardTelemetry, webcam.getTargetDistance());
             dashboardTelemetry.update();
         }
-        timer.reset();
+
+        //Turn
+        driveBase.rotateRight(driveBase.FAST_POWER_FRACTION, 1250);
+        driveBase.stop();
+
+        //Turn Intake On
+        intake.enableIntake();
+
+        //Move Forward
+        driveBase.moveBackward(driveBase.FAST_POWER_FRACTION, 500);
+        driveBase.stop();
+
+        //Turn Off Intake
+        intake.stop();
+
+
 
         // Turn off Yeeters and Feeders
         yeeters.toggleYeeters();

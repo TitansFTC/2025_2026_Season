@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-@Autonomous(name="AugustusAutoOpRedBack", group = "Titan's AutoOp")
+@Autonomous(name="AugustusAutoOpRedFront", group = "Titan's AutoOp")
 public class AugustusAutoOpRedFront extends LinearOpMode {
 
     private DriveBase driveBase = null;
@@ -43,34 +43,24 @@ public class AugustusAutoOpRedFront extends LinearOpMode {
 
         ElapsedTime timer = new ElapsedTime();
 
-        // Activate Yeeters and move forward
+        // Activate Yeeters and move backward
         yeeters.toggleYeeters();
 
-        driveBase.moveForward();
-        while (timer.seconds() < 1.5) {
-            sleep(1);
-        }
+        driveBase.moveBackward(driveBase.FAST_POWER_FRACTION, 700);
         driveBase.stop();
-        timer.reset();
-
-        driveBase.rotateRight();
-        while (timer.seconds() < 0.5) {
-            sleep(1);
-        }
-        driveBase.stop();
-        timer.reset();
 
         // Turn on Yeeters
-        while (timer.seconds() < 3.0) {
-            yeeters.loop(gamepad1, dashboardTelemetry, 500); // Big number to shoot far
+        timer.reset();
+        while (timer.seconds() < 1.0) {
+            yeeters.loop(gamepad1, dashboardTelemetry, webcam.getTargetDistance()); // Big number to shoot far
             dashboardTelemetry.update();
         }
-        timer.reset();
 
         // Turn on Feeders
         feeders.enableFeeders();
+        timer.reset();
         while (timer.seconds() < 10.0) {
-            yeeters.loop(gamepad1, dashboardTelemetry, 500);
+            yeeters.loop(gamepad1, dashboardTelemetry, webcam.getTargetDistance());
             dashboardTelemetry.update();
         }
         timer.reset();
@@ -78,10 +68,6 @@ public class AugustusAutoOpRedFront extends LinearOpMode {
         // Turn off Yeeters and Feeders
         yeeters.toggleYeeters();
         feeders.stop();
-
-        driveBase.moveForward();
-        sleep(2000);
-        driveBase.stop();
     }
 }
 

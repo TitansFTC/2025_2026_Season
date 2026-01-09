@@ -7,8 +7,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-@Autonomous(name="AugustusAutoOpRedBack", group = "Titan's AutoOp")
-public class AugustusAutoOpRedBack extends LinearOpMode {
+@Autonomous(name="AugustusAutoOpBlueBack", group = "Titan's AutoOp")
+public class AugustusAutoOpBlueBack extends LinearOpMode {
 
     private DriveBase driveBase = null;
     private Intake intake = null;
