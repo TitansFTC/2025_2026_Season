@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class DriveBase {
-    public static final double FAST_POWER_FRACTION = 0.8;
+    public static final double FAST_POWER_FRACTION = 1.0;
     public static final double SLOW_POWER_FRACTION = 0.2;
 
     private DcMotorEx leftFront = null;
@@ -45,10 +45,10 @@ public class DriveBase {
         }
 
         //Set left and right motor powers
-        leftFront.setPower(leftFrontPower);
-        leftBack.setPower(leftBackPower);
-        rightFront.setPower(rightFrontPower);
-        rightBack.setPower(rightBackPower);
+        leftFront.setPower(leftFrontPower*powerFraction);
+        leftBack.setPower(leftBackPower*powerFraction);
+        rightFront.setPower(rightFrontPower*powerFraction);
+        rightBack.setPower(rightBackPower*powerFraction);
 
         //Add T
         telemetry.addData("leftFrontPower", leftFrontPower);
