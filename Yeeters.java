@@ -4,35 +4,42 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class Yeeters {
-    private static final double kP = 0.005;
-    private static final double kI = 0.00001;
-    private static final double kD = 0;
+    private static final double kP = 150;
+    private static final double kI = 0.0;
+    private static final double kD = 0.0;
+    private static final double kF = 13;
 
     private static final double alpha = 586.86;
     private static final double beta = 5.17;
-    private static final double yeeterDefaultVelocity = 850;
+    private static final double yeeterNearVelocity = 850;
+    private static final double yeeterFarVelocity = 2000;
 
     private DcMotorEx yeeterLeft = null;
     private DcMotorEx yeeterRight = null;
     private boolean yeeterActive = false;
-    private double yeeterTargetVelocity = yeeterDefaultVelocity;
+    private double yeeterTargetVelocity = yeeterNearVelocity;
 
-    private PID yeeterLeftPID = new PID(kP, kI, kD);
-    private PID yeeterRightPID = new PID(kP, kI, kD);
-
-    private int debounce = 0;
+    private boolean yeeterManual = false;
 
     public  Yeeters(HardwareMap hardwareMap) {
-        // Get yeeters from hardware map
-        yeeterLeft = hardwareMap.get(DcMotorEx.class, "yeeterLeft");
-        yeeterRight = hardwareMap.get(DcMotorEx.class, "yeeterRight");
+        // Set PIDF coefficients
+        PIDFCoefficients pidfCoefficients = new PIDFCoefficients(kP, 0, 0, kF);
 
-        // Reverse direction of right Yeeter
-        yeeterRight.setDirection(DcMotorSimple.Direction.REVERSE);
+        // Setup left Yeeter
+        yeeterLeft = hardwareMap.get(DcMotorEx.class, "yeeterLeft");
+        yeeterLeft.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        yeeterLeft.setPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER, pidfCoefficients);
+
+        // Setup right Yeeter
+        yeeterRight = hardwareMap.get(DcMotorEx.class, "yeeterRight");
+        yeeterRight.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        yeeterRight.setDirection(DcMotorEx.Direction.REVERSE);
+        yeeterRight.setPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER, pidfCoefficients);
     }
 
     public void loop(Gamepad gamepad, Telemetry telemetry, double distance) {
@@ -41,43 +48,41 @@ public class Yeeters {
             yeeterActive = !yeeterActive;
         }
 
-        if (distance == 0){
-            yeeterTargetVelocity = yeeterDefaultVelocity;
+        if (gamepad.rightBumperWasPressed()) {
+            yeeterManual = !yeeterManual;
+        }
+
+        if (gamepad.left_bumper) {
+            yeeterTargetVelocity = yeeterFarVelocity;
+        } else if (yeeterManual) {
+            if (gamepad.dpadUpWasPressed()) {
+                yeeterTargetVelocity += 25;
+            } else if(gamepad.dpadDownWasPressed()) {
+                yeeterTargetVelocity -= 25;
+            }
         } else {
-            // Automatic Target Velocity using Linear Regression
-            yeeterTargetVelocity = computeYeeterVelocity(distance);
+            if (distance == 0) {
+                yeeterTargetVelocity = yeeterNearVelocity;
+            } else {
+                // Automatic Target Velocity using Linear Regression
+                yeeterTargetVelocity = computeYeeterVelocity(distance);
+            }
         }
 
-        // Adjust Target Velocity
-      /*  if (gamepad.dpad_up && debounce == 0) {
-            yeeterTargetVelocity += 25;
-        } else if (gamepad.dpad_down && debounce == 0) {
-            yeeterTargetVelocity -= 25;
+        // Set yeeter velocities
+        if (yeeterActive) {
+            yeeterLeft.setVelocity(yeeterTargetVelocity);
+            yeeterRight.setVelocity(yeeterTargetVelocity);
+        } else {
+            yeeterLeft.setVelocity(0);
+            yeeterRight.setVelocity(0);
         }
-
-       */
-        debounce = (debounce + 1) % 60;
-
-        // Set yeeter powers if active or B button is pressed using proportional
-        double yeeterLeftPower = 0;
-        double yeeterRightPower = 0;
-        if (yeeterActive || gamepad.b ) {
-          yeeterLeftPower = yeeterLeftPID.update(yeeterTargetVelocity, yeeterLeft.getVelocity());
-          yeeterRightPower = yeeterRightPID.update(yeeterTargetVelocity, yeeterRight.getVelocity());
-        }
-
-
-
-        yeeterLeft.setPower(yeeterLeftPower);
-        yeeterRight.setPower(yeeterRightPower);
 
         //add T
         telemetry.addData("distance", distance);
         telemetry.addData("yeeterTargetVelocity", yeeterTargetVelocity);
         telemetry.addData("yeeterRightVelocity", yeeterRight.getVelocity());
         telemetry.addData("yeeterLeftVelocity", yeeterLeft.getVelocity());
-        telemetry.addData("yeeterRightPower", yeeterRightPower);
-        telemetry.addData("yeeterLeftPower", yeeterLeftPower);
     }
     public void stop() {
         //stop all motors
