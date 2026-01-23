@@ -44,7 +44,7 @@ public class AugustusTeleop extends OpMode {
         // Loop IFY with gamepad2
         webcam.loop(dashboardTelemetry);
         intake.loop(gamepad2, dashboardTelemetry);
-        feeders.loop(gamepad2, dashboardTelemetry);
+        feeders.loop(gamepad2, dashboardTelemetry, yeeters.isReady());
         yeeters.loop(gamepad2, dashboardTelemetry, webcam.getTargetDistance());
 
         //Update A tags

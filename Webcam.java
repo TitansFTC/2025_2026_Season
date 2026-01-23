@@ -67,8 +67,14 @@ public class Webcam {
     public void loop(Telemetry telemetry) {
         update();
         for(AprilTagDetection detection: detectedTags){
-            telemetry.addData(Integer.toString(detection.id), String.format("XYZ %6.1f %6.1f %6.1f  (inch)", detection.ftcPose.x, detection.ftcPose.y, detection.ftcPose.z));
+            try {
+                telemetry.addData(Integer.toString(detection.id), String.format("XYZ %6.1f %6.1f %6.1f  (inch)", detection.ftcPose.x, detection.ftcPose.y, detection.ftcPose.z));
+            } catch (Exception e) {
+                //do nothing
+            }
+
         }
+
     }
     public double getTargetDistance() {
         for(AprilTagDetection detection: detectedTags){

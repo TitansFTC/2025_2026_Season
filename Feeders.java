@@ -22,7 +22,7 @@ public class Feeders {
         feederD = hardwareMap.get(CRServo.class, "feederD");
     }
 
-    public void loop(Gamepad gamepad, Telemetry telemetry) {
+    public void loop(Gamepad gamepad, Telemetry telemetry, boolean yeetersReady) {
         //Activate feeder servos if x or b is pressed
         double feederAPower = 0;
         double feederBPower = 0;

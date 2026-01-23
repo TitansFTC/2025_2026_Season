@@ -46,7 +46,7 @@ public class AugustusAutoOpBlueFront extends LinearOpMode {
         // Activate Yeeters and move backward
         yeeters.toggleYeeters();
 
-        driveBase.moveBackward(driveBase.FAST_POWER_FRACTION, 700);
+        driveBase.moveBackward(driveBase.FAST_POWER_FRACTION, 875);
         driveBase.stop();
 
         // Turn on Yeeters
@@ -63,25 +63,24 @@ public class AugustusAutoOpBlueFront extends LinearOpMode {
             yeeters.loop(gamepad1, dashboardTelemetry, webcam.getTargetDistance());
             dashboardTelemetry.update();
         }
+        yeeters.toggleYeeters();
 
         //Turn
-        driveBase.rotateRight(driveBase.FAST_POWER_FRACTION, 1250);
+        driveBase.rotateRight(driveBase.FAST_POWER_FRACTION, 750);
         driveBase.stop();
 
         //Turn Intake On
-        intake.enableIntake();
+       // intake.enableIntake();
 
         //Move Forward
-        driveBase.moveBackward(driveBase.FAST_POWER_FRACTION, 500);
+        driveBase.moveBackward(driveBase.FAST_POWER_FRACTION, 300);
         driveBase.stop();
 
         //Turn Off Intake
-        intake.stop();
-
-
+       // intake.stop();
 
         // Turn off Yeeters and Feeders
-        yeeters.toggleYeeters();
+
         feeders.stop();
     }
 }

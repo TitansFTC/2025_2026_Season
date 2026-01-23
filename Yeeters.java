@@ -14,10 +14,11 @@ public class Yeeters {
     private static final double kD = 0.0;
     private static final double kF = 13;
 
-    private static final double alpha = 586.86;
+    private static final double EPSILON = 0.03;
+    private static final double alpha = 750;
     private static final double beta = 5.17;
-    private static final double yeeterNearVelocity = 850;
-    private static final double yeeterFarVelocity = 2000;
+    private static final double yeeterNearVelocity = 1000;
+    private static final double yeeterFarVelocity = 1800;
 
     private DcMotorEx yeeterLeft = null;
     private DcMotorEx yeeterRight = null;
@@ -95,6 +96,11 @@ public class Yeeters {
     }
 
     public double computeYeeterVelocity(double distance) {
-        return alpha + beta*distance;
+        return alpha + beta*distance; // Boost constant
+    }
+
+    public boolean isReady() {
+        return (Math.abs (yeeterLeft.getVelocity()- yeeterTargetVelocity) <EPSILON * yeeterTargetVelocity) &&
+                (Math.abs (yeeterRight.getVelocity()- yeeterTargetVelocity) <EPSILON * yeeterTargetVelocity);
     }
 }

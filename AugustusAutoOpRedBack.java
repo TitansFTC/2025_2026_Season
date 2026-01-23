@@ -43,14 +43,19 @@ public class AugustusAutoOpRedBack extends LinearOpMode {
 
         ElapsedTime timer = new ElapsedTime();
 
+        driveBase.moveForward(driveBase.SLOW_POWER_FRACTION, 300);
+        driveBase.stop();
+
+        driveBase.strafeLeft(driveBase.SLOW_POWER_FRACTION, 500);
+        driveBase.stop();
+
         // Activate Yeeters and move forward
-        yeeters.toggleYeeters();
+      /*  yeeters.toggleYeeters();
 
         driveBase.moveForward(driveBase.SLOW_POWER_FRACTION, 1500);
         driveBase.stop();
 
-        driveBase.rotateRight(driveBase.FAST_POWER_FRACTION, 500);
-        driveBase.stop();
+     driveBase.rotateRight(driveBase.FAST_POWER_FRACTION, 500);/driveBase.stop();
 
         // Turn on Yeeters
         timer.reset();
@@ -69,12 +74,8 @@ public class AugustusAutoOpRedBack extends LinearOpMode {
 
         // Turn off Yeeters and Feeders
         yeeters.toggleYeeters();
-        feeders.stop();
+        feeders.stop(); */
 
-        driveBase.moveForward(driveBase.SLOW_POWER_FRACTION, 2000);
-        driveBase.stop();
+
     }
 }
-
-
-
