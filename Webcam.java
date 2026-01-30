@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 import android.util.Size;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -20,6 +21,9 @@ public class Webcam {
     private VisionPortal visionPortal;
     private List<AprilTagDetection> detectedTags = new ArrayList<>();
     private Telemetry telemetry;
+    private Servo rgbIndicator;
+    private double targetDistance = 0;
+    private double targetBearing = 180;
 
     public Webcam(HardwareMap hwMap, Telemetry telemetry){
         this.telemetry=telemetry;
@@ -36,13 +40,13 @@ public class Webcam {
         builder.addProcessor(aprilTagProcessor);
         visionPortal = builder.build();
 
+        rgbIndicator = hwMap.get(Servo.class, "rgbIndicator");
     }
-    public void update(){
-        detectedTags=aprilTagProcessor.getDetections();
-    }
+
     public List<AprilTagDetection> getDetectedTags(){
         return detectedTags;
     }
+
     public void displayDetectionTelemetry(AprilTagDetection detectedId){
         if (detectedId==null){return;}
         if (detectedId.metadata != null) {
@@ -55,8 +59,8 @@ public class Webcam {
             telemetry.addLine(String.format("Center %6.0f %6.0f   (pixels)", detectedId.center.x, detectedId.center.y));
         }
     }
-    public AprilTagDetection getTagBySpecificId(int id){
 
+    public AprilTagDetection getTagBySpecificId(int id){
         for(AprilTagDetection detection: detectedTags){
             if(detection.id==id){
                 return detection;
@@ -64,26 +68,41 @@ public class Webcam {
         }
         return null;
     }
+
     public void loop(Telemetry telemetry) {
-        update();
+        // Update detected tags
+        detectedTags=aprilTagProcessor.getDetections();
+
+        targetDistance = 0;
+        targetBearing = 180;
         for(AprilTagDetection detection: detectedTags){
             try {
-                telemetry.addData(Integer.toString(detection.id), String.format("XYZ %6.1f %6.1f %6.1f  (inch)", detection.ftcPose.x, detection.ftcPose.y, detection.ftcPose.z));
+                //red goal: 24, blue goal: 20
+                if (detection.id == 24 || detection.id == 20) {
+                    targetDistance = detection.ftcPose.y;
+                    targetBearing = detection.ftcPose.bearing;
+                }
+
+                telemetry.addData(Integer.toString(detection.id), String.format("XYZB %6.1f %6.1f %6.1f %6.1f", detection.ftcPose.x, detection.ftcPose.y, detection.ftcPose.z, detection.ftcPose.bearing));
             } catch (Exception e) {
                 //do nothing
             }
-
         }
 
-    }
-    public double getTargetDistance() {
-        for(AprilTagDetection detection: detectedTags){
-            //red goal: 24, blue goal: 20
-            if (detection.id == 24 || detection.id == 20) {
-                return detection.ftcPose.y;
+        // Control RGB
+        if (targetDistance > 0) {
+            if (Math.abs(targetBearing) < 3) {
+                rgbIndicator.setPosition(0.500); // Green
+            } else {
+                rgbIndicator.setPosition(0.388); // Yellow
             }
+        } else {
+            rgbIndicator.setPosition(0.0); // Black
         }
-        return 0;
+    }
+
+    public double getTargetDistance() {
+        return targetDistance;
     }
     public void stop(){
         if (visionPortal != null){

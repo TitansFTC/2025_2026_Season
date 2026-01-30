@@ -58,7 +58,7 @@ public class YeetersTunerTeleop extends OpMode {
     	    velocityIndex = (velocityIndex + 1) % yeeterVelocities.length;
 	    }
         if (gamepad1.xWasPressed()) {
-            velocityIndex = (velocityIndex - 1) % yeeterVelocities.length;
+            velocityIndex = Math.max(0, (velocityIndex - 1));
         }
 
 	    // B cycles through step sizes

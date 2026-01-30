@@ -43,24 +43,20 @@ public class AugustusAutoOpBlueBack extends LinearOpMode {
 
         ElapsedTime timer = new ElapsedTime();
 
-        driveBase.moveForward(driveBase.SLOW_POWER_FRACTION, 300);
+        driveBase.moveForward(driveBase.SLOW_POWER_FRACTION, 140);
         driveBase.stop();
 
-        driveBase.strafeRight(driveBase.SLOW_POWER_FRACTION, 500);
+        driveBase.rotateLeft(driveBase.SLOW_POWER_FRACTION, 140);
         driveBase.stop();
 
         // Activate Yeeters and move forward
-      /*  yeeters.toggleYeeters();
-
-        driveBase.moveForward(driveBase.SLOW_POWER_FRACTION, 1500);
-        driveBase.stop();
-
-     driveBase.rotateRight(driveBase.FAST_POWER_FRACTION, 500);/driveBase.stop();
+        yeeters.toggleYeeters();
 
         // Turn on Yeeters
         timer.reset();
         while (timer.seconds() < 3.0) {
-            yeeters.loop(gamepad1, dashboardTelemetry, 200); // Big number to shoot far
+            webcam.loop(dashboardTelemetry);
+            yeeters.loop(gamepad1, dashboardTelemetry, 130); // Big number to shoot far
             dashboardTelemetry.update();
         }
 
@@ -68,13 +64,17 @@ public class AugustusAutoOpBlueBack extends LinearOpMode {
         feeders.enableFeeders();
         timer.reset();
         while (timer.seconds() < 10.0) {
-            yeeters.loop(gamepad1, dashboardTelemetry, 200);
+            webcam.loop(dashboardTelemetry);
+            yeeters.loop(gamepad1, dashboardTelemetry, 130);
             dashboardTelemetry.update();
         }
 
         // Turn off Yeeters and Feeders
         yeeters.toggleYeeters();
-        feeders.stop(); */
+        feeders.stop();
+
+        driveBase.moveForward(driveBase.SLOW_POWER_FRACTION, 750);
+        driveBase.stop();
 
 
     }

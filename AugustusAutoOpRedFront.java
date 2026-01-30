@@ -46,34 +46,38 @@ public class AugustusAutoOpRedFront extends LinearOpMode {
         // Activate Yeeters and move backward
         yeeters.toggleYeeters();
 
-        driveBase.moveBackward(driveBase.FAST_POWER_FRACTION, 750);//was 875
+        driveBase.moveBackward(driveBase.SLOW_POWER_FRACTION, 1800);
         driveBase.stop();
 
         // Turn on Yeeters
         timer.reset();
         while (timer.seconds() < 1.0) {
+            webcam.loop(dashboardTelemetry);
             yeeters.loop(gamepad1, dashboardTelemetry, webcam.getTargetDistance()); // Big number to shoot far
             dashboardTelemetry.update();
         }
 
         // Turn on Feeders
         feeders.enableFeeders();
+        intake.enableIntake();
         timer.reset();
+
         while (timer.seconds() < 10.0) {
+            webcam.loop(dashboardTelemetry);
             yeeters.loop(gamepad1, dashboardTelemetry, webcam.getTargetDistance());
             dashboardTelemetry.update();
         }
         yeeters.toggleYeeters();
 
         //Turn
-        driveBase.rotateLeft(driveBase.FAST_POWER_FRACTION, 750);
+        driveBase.rotateLeft(driveBase.SLOW_POWER_FRACTION, 1100);
         driveBase.stop();
 
         //Turn Intake On
-        // intake.enableIntake();
+        //intake.enableIntake();
 
         //Move Forward
-        driveBase.moveBackward(driveBase.FAST_POWER_FRACTION, 500);//was 300
+        driveBase.moveBackward(driveBase.SLOW_POWER_FRACTION, 1200);
         driveBase.stop();
 
         //Turn Off Intake
@@ -81,13 +85,25 @@ public class AugustusAutoOpRedFront extends LinearOpMode {
 
         // Turn off Yeeters and Feeders
 
+        //Move Forward
+       /* driveBase.moveForward(driveBase.SLOW_POWER_FRACTION, 1200);
+        driveBase.stop();
+
+        driveBase.rotateLeft(driveBase.SLOW_POWER_FRACTION, 1100);
+        driveBase.stop();
+
+        timer.reset();
+
+        while (timer.seconds() < 10.0) {
+            webcam.loop(dashboardTelemetry);
+            yeeters.loop(gamepad1, dashboardTelemetry, webcam.getTargetDistance());
+            dashboardTelemetry.update();
+        }
+        yeeters.toggleYeeters();*/
+
         feeders.stop();
     }
 }
-
-
-
-
 
 
 
