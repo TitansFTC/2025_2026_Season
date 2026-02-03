@@ -52,11 +52,16 @@ public class Feeders {
         telemetry.addData("feederDPower", feederDPower);
     }
 
-    public void enableFeeders() {
+    public void enableFeeders(boolean shoot) {
         feederA.setPower(-1);
         feederB.setPower(-1);
         feederC.setPower(-1);
-        feederD.setPower(1);
+        if (shoot) {
+            feederD.setPower(1);
+        }
+        else{
+          feederD.setPower(-1);
+        }
     }
 
     public void stop() {

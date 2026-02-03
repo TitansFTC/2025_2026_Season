@@ -22,7 +22,7 @@ public class Intake {
     public void loop(Gamepad gamepad, Telemetry telemetry) {
         //activate intake if a or b is pressed
         double intakePower = 0;
-        if (gamepad.a || gamepad.b) {
+        if (gamepad.a || gamepad.b || gamepad.x) {
             intakePower = 1;
         }
 

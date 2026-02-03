@@ -91,10 +91,14 @@ public class Webcam {
 
         // Control RGB
         if (targetDistance > 0) {
-            if (Math.abs(targetBearing) < 3) {
+            if (Math.abs(targetBearing) < 2) {
                 rgbIndicator.setPosition(0.500); // Green
             } else {
-                rgbIndicator.setPosition(0.388); // Yellow
+                if (targetBearing>0){
+                    rgbIndicator.setPosition(0.611);
+                }else {
+                    rgbIndicator.setPosition(0.3); // Yellow
+                }
             }
         } else {
             rgbIndicator.setPosition(0.0); // Black

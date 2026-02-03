@@ -15,10 +15,10 @@ public class Yeeters {
     private static final double kF = 13.2;
 
     private static final double EPSILON = 0.03;
-    private static final double alpha = 848.98;
-    private static final double beta = 1.53;
-    private static final double yeeterNearVelocity = 930;
-    private static final double yeeterFarVelocity = 1050;
+    private static final double alpha = 830;
+    private static final double beta = 1.50;
+    private static final double yeeterNearVelocity = 900;
+    private static final double yeeterFarVelocity = 1000;
 
     private DcMotorEx yeeterLeft = null;
     private DcMotorEx yeeterRight = null;
@@ -93,6 +93,9 @@ public class Yeeters {
 
     public void toggleYeeters() {
         yeeterActive = !yeeterActive;
+        if (!yeeterActive){
+            stop();
+        }
     }
 
     public double computeYeeterVelocity(double distance) {

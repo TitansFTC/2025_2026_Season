@@ -43,10 +43,10 @@ public class AugustusAutoOpBlueBack extends LinearOpMode {
 
         ElapsedTime timer = new ElapsedTime();
 
-        driveBase.moveForward(driveBase.SLOW_POWER_FRACTION, 140);
+        driveBase.moveForward(driveBase.HALF_POWER_FRACTION, 210);
         driveBase.stop();
 
-        driveBase.rotateLeft(driveBase.SLOW_POWER_FRACTION, 140);
+        driveBase.rotateLeft(driveBase.SLOW_POWER_FRACTION, 55);
         driveBase.stop();
 
         // Activate Yeeters and move forward
@@ -61,9 +61,10 @@ public class AugustusAutoOpBlueBack extends LinearOpMode {
         }
 
         // Turn on Feeders
-        feeders.enableFeeders();
+        feeders.enableFeeders(true);
+        intake.enableIntake();
         timer.reset();
-        while (timer.seconds() < 10.0) {
+        while (timer.seconds() < 7.0) {
             webcam.loop(dashboardTelemetry);
             yeeters.loop(gamepad1, dashboardTelemetry, 130);
             dashboardTelemetry.update();
@@ -73,8 +74,33 @@ public class AugustusAutoOpBlueBack extends LinearOpMode {
         yeeters.toggleYeeters();
         feeders.stop();
 
-        driveBase.moveForward(driveBase.SLOW_POWER_FRACTION, 750);
+        driveBase.moveForward(driveBase.HALF_POWER_FRACTION, 600);
+        driveBase.rotateRight(driveBase.HALF_POWER_FRACTION, 1100);
+        feeders.enableFeeders(false);
+        driveBase.moveBackward(driveBase.SLOW_POWER_FRACTION, 750);
+        feeders.stop();
+        driveBase.moveBackward(driveBase.SLOW_POWER_FRACTION, 400);
+
         driveBase.stop();
+        feeders.stop();
+        driveBase.moveForward(driveBase.HALF_POWER_FRACTION, 1300);
+        driveBase.rotateLeft(driveBase.HALF_POWER_FRACTION, 880);
+        driveBase.moveBackward(driveBase.HALF_POWER_FRACTION, 400);
+        driveBase.stop();
+        timer.reset();
+
+        yeeters.toggleYeeters();
+        sleep(1000);
+        feeders.enableFeeders(true);
+
+        while (timer.seconds() < 7.0) {
+            webcam.loop(dashboardTelemetry);
+            yeeters.loop(gamepad1, dashboardTelemetry, 130);
+            dashboardTelemetry.update();
+        }
+        driveBase.moveForward(driveBase.HALF_POWER_FRACTION, 500);
+        driveBase.stop();
+
 
 
     }

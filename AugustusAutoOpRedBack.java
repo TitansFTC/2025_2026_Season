@@ -43,10 +43,10 @@ public class AugustusAutoOpRedBack extends LinearOpMode {
 
         ElapsedTime timer = new ElapsedTime();
 
-        driveBase.moveForward(driveBase.SLOW_POWER_FRACTION, 140);
+        driveBase.moveForward(driveBase.HALF_POWER_FRACTION, 210);
         driveBase.stop();
 
-        driveBase.rotateRight(driveBase.SLOW_POWER_FRACTION, 140);
+        driveBase.rotateRight(driveBase.SLOW_POWER_FRACTION, 270);
         driveBase.stop();
 
         // Activate Yeeters and move forward
@@ -56,16 +56,17 @@ public class AugustusAutoOpRedBack extends LinearOpMode {
         timer.reset();
         while (timer.seconds() < 3.0) {
             webcam.loop(dashboardTelemetry);
-            yeeters.loop(gamepad1, dashboardTelemetry, 130); // Big number to shoot far
+            yeeters.loop(gamepad1, dashboardTelemetry, 120); // Big number to shoot far
             dashboardTelemetry.update();
         }
 
         // Turn on Feeders
-        feeders.enableFeeders();
+        feeders.enableFeeders(true);
+        intake.enableIntake();
         timer.reset();
-        while (timer.seconds() < 10.0) {
+        while (timer.seconds() < 7.0) {
             webcam.loop(dashboardTelemetry);
-            yeeters.loop(gamepad1, dashboardTelemetry, 130);
+            yeeters.loop(gamepad1, dashboardTelemetry, 120);
             dashboardTelemetry.update();
         }
 
@@ -73,8 +74,33 @@ public class AugustusAutoOpRedBack extends LinearOpMode {
         yeeters.toggleYeeters();
         feeders.stop();
 
-        driveBase.moveForward(driveBase.SLOW_POWER_FRACTION, 750);
+        driveBase.moveForward(driveBase.HALF_POWER_FRACTION, 650);
+        driveBase.rotateLeft(driveBase.HALF_POWER_FRACTION, 740);
+        feeders.enableFeeders(false);
+        driveBase.moveBackward(driveBase.SLOW_POWER_FRACTION, 850);
+        feeders.stop();
+        driveBase.moveBackward(driveBase.SLOW_POWER_FRACTION, 400);
+
         driveBase.stop();
+        feeders.stop();
+        driveBase.moveForward(driveBase.HALF_POWER_FRACTION, 1150);
+        driveBase.rotateRight(driveBase.HALF_POWER_FRACTION, 1100);
+        driveBase.moveBackward(driveBase.HALF_POWER_FRACTION, 375);
+        driveBase.stop();
+        timer.reset();
+
+        yeeters.toggleYeeters();
+        sleep(1000);
+        feeders.enableFeeders(true);
+
+        while (timer.seconds() < 7.0) {
+            webcam.loop(dashboardTelemetry);
+            yeeters.loop(gamepad1, dashboardTelemetry, 120);
+            dashboardTelemetry.update();
+        }
+        driveBase.moveForward(driveBase.HALF_POWER_FRACTION, 500);
+        driveBase.stop();
+
 
 
     }

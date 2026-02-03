@@ -11,6 +11,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 public class DriveBase {
     public static final double FAST_POWER_FRACTION = 1.0;
     public static final double SLOW_POWER_FRACTION = 0.2;
+    public static final double HALF_POWER_FRACTION = .5;
 
     private DcMotorEx leftFront = null;
     private DcMotorEx leftBack = null;
@@ -127,9 +128,9 @@ public class DriveBase {
         int initial = rightBack.getCurrentPosition();
         int difference = Math.abs(initial - rightBack.getCurrentPosition());
         leftFront.setPower(-power);
-        leftBack.setPower(power);
+        leftBack.setPower(-power);
         rightFront.setPower(power);
-        rightBack.setPower(-power);
+        rightBack.setPower(power);
         while (difference < duration) {
             difference = Math.abs(initial - rightBack.getCurrentPosition());
         }
@@ -138,9 +139,9 @@ public class DriveBase {
     public void strafeLeft(double power, int duration) {
         int initial = rightBack.getCurrentPosition();
         int difference = Math.abs(initial - rightBack.getCurrentPosition());
-        leftFront.setPower(-power);
+        leftFront.setPower(power);
         leftBack.setPower(power);
-        rightFront.setPower(power);
+        rightFront.setPower(-power);
         rightBack.setPower(-power);
         while (difference < duration) {
             difference = Math.abs(initial - rightBack.getCurrentPosition());
