@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
@@ -20,7 +21,7 @@ public class AugustusTeleop extends OpMode {
 
     private Webcam webcam = null;
 
-    @Override
+                     @Override
     public void init() {
         //Initialize DB, I, F, Y
         driveBase = new DriveBase(hardwareMap);
@@ -39,10 +40,10 @@ public class AugustusTeleop extends OpMode {
     @Override
     public void loop() {
         // Loop drive base with gamepad 1
-        driveBase.loop(gamepad1, dashboardTelemetry);
+        webcam.loop(dashboardTelemetry);
+        driveBase.loop(gamepad1, dashboardTelemetry, webcam.getTargetBearing());
 
         // Loop IFY with gamepad2
-        webcam.loop(dashboardTelemetry);
         intake.loop(gamepad2, dashboardTelemetry);
         feeders.loop(gamepad2, dashboardTelemetry, yeeters.isReady());
         yeeters.loop(gamepad2, dashboardTelemetry, webcam.getTargetDistance());
