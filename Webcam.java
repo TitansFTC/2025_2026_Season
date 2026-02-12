@@ -75,6 +75,7 @@ public class Webcam {
 
         targetDistance = 0;
         targetBearing = 180;
+
         for(AprilTagDetection detection: detectedTags){
             try {
                 //red goal: 24, blue goal: 20
@@ -113,5 +114,10 @@ public class Webcam {
             visionPortal.close();
         }
     }
+
+    public double getTargetBearing(){
+        return targetBearing;
+    }
+
 
 }

@@ -14,7 +14,6 @@ public class AugustusAutoOpBlueBack extends LinearOpMode {
     private Intake intake = null;
     private Feeders feeders = null;
     private Yeeters yeeters = null;
-
     private FtcDashboard dashboard = null;
     private Telemetry dashboardTelemetry = null;
 
@@ -40,12 +39,13 @@ public class AugustusAutoOpBlueBack extends LinearOpMode {
         initHardware();
 
         waitForStart();
-
         ElapsedTime timer = new ElapsedTime();
 
+        //Move to good shooting distance
         driveBase.moveForward(driveBase.HALF_POWER_FRACTION, 210);
         driveBase.stop();
 
+        //Rotate toward the goal
         driveBase.rotateLeft(driveBase.SLOW_POWER_FRACTION, 55);
         driveBase.stop();
 
@@ -73,12 +73,17 @@ public class AugustusAutoOpBlueBack extends LinearOpMode {
         // Turn off Yeeters and Feeders
         yeeters.toggleYeeters();
         feeders.stop();
-
+        //Move to collect the balls
         driveBase.moveForward(driveBase.HALF_POWER_FRACTION, 600);
+        //Turn turn balls
         driveBase.rotateRight(driveBase.HALF_POWER_FRACTION, 1100);
+        //pick up balls
         feeders.enableFeeders(false);
+        //Move back
         driveBase.moveBackward(driveBase.SLOW_POWER_FRACTION, 750);
+
         feeders.stop();
+
         driveBase.moveBackward(driveBase.SLOW_POWER_FRACTION, 400);
 
         driveBase.stop();

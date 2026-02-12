@@ -20,6 +20,8 @@ public class AugustusAutoOpRedBack extends LinearOpMode {
 
     private Webcam webcam = null;
 
+    private double targetDistance = 125;
+
     public void initHardware() {
         //Initialize DB, I, F, Y
         driveBase = new DriveBase(hardwareMap);
@@ -43,10 +45,10 @@ public class AugustusAutoOpRedBack extends LinearOpMode {
 
         ElapsedTime timer = new ElapsedTime();
 
-        driveBase.moveForward(driveBase.HALF_POWER_FRACTION, 210);
+        driveBase.moveForward(driveBase.HALF_POWER_FRACTION, 220);
         driveBase.stop();
 
-        driveBase.rotateRight(driveBase.SLOW_POWER_FRACTION, 270);
+        driveBase.rotateRight(driveBase.SLOW_POWER_FRACTION, 280);
         driveBase.stop();
 
         // Activate Yeeters and move forward
@@ -56,7 +58,7 @@ public class AugustusAutoOpRedBack extends LinearOpMode {
         timer.reset();
         while (timer.seconds() < 3.0) {
             webcam.loop(dashboardTelemetry);
-            yeeters.loop(gamepad1, dashboardTelemetry, 120); // Big number to shoot far
+            yeeters.loop(gamepad1, dashboardTelemetry, targetDistance); // Big number to shoot far
             dashboardTelemetry.update();
         }
 
@@ -66,7 +68,7 @@ public class AugustusAutoOpRedBack extends LinearOpMode {
         timer.reset();
         while (timer.seconds() < 7.0) {
             webcam.loop(dashboardTelemetry);
-            yeeters.loop(gamepad1, dashboardTelemetry, 120);
+            yeeters.loop(gamepad1, dashboardTelemetry, targetDistance);
             dashboardTelemetry.update();
         }
 
@@ -84,7 +86,7 @@ public class AugustusAutoOpRedBack extends LinearOpMode {
         driveBase.stop();
         feeders.stop();
         driveBase.moveForward(driveBase.HALF_POWER_FRACTION, 1150);
-        driveBase.rotateRight(driveBase.HALF_POWER_FRACTION, 1100);
+        driveBase.rotateRight(driveBase.HALF_POWER_FRACTION, 1150);
         driveBase.moveBackward(driveBase.HALF_POWER_FRACTION, 375);
         driveBase.stop();
         timer.reset();
@@ -95,7 +97,7 @@ public class AugustusAutoOpRedBack extends LinearOpMode {
 
         while (timer.seconds() < 7.0) {
             webcam.loop(dashboardTelemetry);
-            yeeters.loop(gamepad1, dashboardTelemetry, 120);
+            yeeters.loop(gamepad1, dashboardTelemetry, targetDistance);
             dashboardTelemetry.update();
         }
         driveBase.moveForward(driveBase.HALF_POWER_FRACTION, 500);

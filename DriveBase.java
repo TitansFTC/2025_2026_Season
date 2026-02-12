@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 import com.acmerobotics.dashboard.FtcDashboard;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -36,7 +37,7 @@ public class DriveBase {
         dashboardTelemetry = dashboard.getTelemetry();
     }
 
-    public void loop(Gamepad gamepad, Telemetry telemetry) {
+    public void loop(Gamepad gamepad, Telemetry telemetry, double targetBearing) {
         //Compute left motor powers
         double leftFrontPower = (gamepad.left_stick_y - gamepad.right_stick_x) - gamepad.left_stick_x;
         double leftBackPower = (gamepad.left_stick_y + gamepad.right_stick_x) - gamepad.left_stick_x;
@@ -51,6 +52,28 @@ public class DriveBase {
             powerFraction = SLOW_POWER_FRACTION;
         }
 
+        //Auto aim
+        if (gamepad.b && Math.abs(targetBearing) > 1 && Math.abs(targetBearing)< 180 ) {
+                powerFraction = Math.abs(targetBearing) / 30;
+
+                if (targetBearing>0) {
+                    leftFrontPower = FAST_POWER_FRACTION;
+                    leftBackPower = -FAST_POWER_FRACTION;
+                    rightFrontPower = -FAST_POWER_FRACTION;
+                    rightBackPower = FAST_POWER_FRACTION;
+
+                }else {
+                    leftFrontPower = -FAST_POWER_FRACTION;
+                    leftBackPower = FAST_POWER_FRACTION;
+                    rightFrontPower = FAST_POWER_FRACTION;
+                    rightBackPower = -FAST_POWER_FRACTION;
+
+                }
+
+        }
+
+
+
         //Set left and right motor powers
         leftFront.setPower(leftFrontPower * powerFraction);
         leftBack.setPower(leftBackPower * powerFraction);
@@ -64,6 +87,7 @@ public class DriveBase {
         telemetry.addData("rightBackPower", rightBackPower);
         telemetry.addData("powerFraction", powerFraction);
         telemetry.addData("rightBack" , rightBack.getCurrentPosition());
+        telemetry.addData("targetBearing", targetBearing);
     }
 
     public void stop() {

@@ -15,9 +15,9 @@ public class Yeeters {
     private static final double kF = 13.2;
 
     private static final double EPSILON = 0.03;
-    private static final double alpha = 830;
-    private static final double beta = 1.50;
-    private static final double yeeterNearVelocity = 900;
+    private static final double alpha = 797.873;
+    private static final double beta = 1.644;
+    private static final double yeeterNearVelocity = 890;
     private static final double yeeterFarVelocity = 1000;
 
     private DcMotorEx yeeterLeft = null;
