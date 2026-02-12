@@ -29,11 +29,17 @@ public class Feeders {
         double feederCPower = 0;
         double feederDPower = 0;
 
-        if (gamepad.a || gamepad.b) {
+        if (gamepad.a) {
+            feederAPower = -0.8; // flipped during reconstruction
+            feederBPower = -0.8;
+            feederCPower = -0.8;
+            feederDPower = -1; // Reverse to hold back balls
+        }
+        else if (gamepad.b) {
             feederAPower = -1; // flipped during reconstruction
             feederBPower = -1;
             feederCPower = -1;
-            feederDPower = -1; // Reverse to hold back balls
+            feederDPower = -1;
         }
 
         if (gamepad.b){
@@ -53,14 +59,17 @@ public class Feeders {
     }
 
     public void enableFeeders(boolean shoot) {
-        feederA.setPower(-1);
-        feederB.setPower(-1);
-        feederC.setPower(-1);
         if (shoot) {
+            feederA.setPower(-1);
+            feederB.setPower(-1);
+            feederC.setPower(-1);
             feederD.setPower(1);
         }
         else{
-          feederD.setPower(-1);
+            feederA.setPower(-0.8);
+            feederB.setPower(-0.8);
+            feederC.setPower(-0.8);
+            feederD.setPower(-1);
         }
     }
 
