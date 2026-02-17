@@ -20,7 +20,7 @@ public class AugustusAutoOpRedBack extends LinearOpMode {
 
     private Webcam webcam = null;
 
-    private double targetDistance = 125;
+    private double targetDistance = 160;
 
     public void initHardware() {
         //Initialize DB, I, F, Y
@@ -48,7 +48,7 @@ public class AugustusAutoOpRedBack extends LinearOpMode {
         driveBase.moveForward(driveBase.HALF_POWER_FRACTION, 220);
         driveBase.stop();
 
-        driveBase.rotateRight(driveBase.SLOW_POWER_FRACTION, 280);
+        driveBase.rotateRight(driveBase.SLOW_POWER_FRACTION, 310);
         driveBase.stop();
 
         // Activate Yeeters and move forward

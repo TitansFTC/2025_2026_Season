@@ -46,7 +46,7 @@ public class AugustusAutoOpRedFront extends LinearOpMode {
         // Activate Yeeters and move backward
         yeeters.toggleYeeters();
 
-        driveBase.moveBackward(driveBase.HALF_POWER_FRACTION, 1750);
+        driveBase.moveBackward(driveBase.HALF_POWER_FRACTION, 1725);
         driveBase.stop();
 
         // Turn on Yeeters
@@ -78,7 +78,7 @@ public class AugustusAutoOpRedFront extends LinearOpMode {
         feeders.enableFeeders(false);
 
         //Move Forward
-        driveBase.moveBackward(driveBase.SLOW_POWER_FRACTION, 1400);
+        driveBase.moveBackward(driveBase.SLOW_POWER_FRACTION, 1450);
         driveBase.stop();
         driveBase.moveForward(driveBase.HALF_POWER_FRACTION, 300);
         feeders.stop();

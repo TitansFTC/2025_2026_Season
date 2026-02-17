@@ -19,6 +19,8 @@ public class AugustusAutoOpBlueBack extends LinearOpMode {
 
     private Webcam webcam = null;
 
+    private double targetDistance = 140;
+
     public void initHardware() {
         //Initialize DB, I, F, Y
         driveBase = new DriveBase(hardwareMap);
@@ -42,11 +44,11 @@ public class AugustusAutoOpBlueBack extends LinearOpMode {
         ElapsedTime timer = new ElapsedTime();
 
         //Move to good shooting distance
-        driveBase.moveForward(driveBase.HALF_POWER_FRACTION, 210);
+        driveBase.moveForward(driveBase.HALF_POWER_FRACTION, 220);
         driveBase.stop();
 
         //Rotate toward the goal
-        driveBase.rotateLeft(driveBase.SLOW_POWER_FRACTION, 55);
+        driveBase.rotateLeft(driveBase.SLOW_POWER_FRACTION, 35);
         driveBase.stop();
 
         // Activate Yeeters and move forward
@@ -56,7 +58,7 @@ public class AugustusAutoOpBlueBack extends LinearOpMode {
         timer.reset();
         while (timer.seconds() < 3.0) {
             webcam.loop(dashboardTelemetry);
-            yeeters.loop(gamepad1, dashboardTelemetry, 130); // Big number to shoot far
+            yeeters.loop(gamepad1, dashboardTelemetry, targetDistance); // Big number to shoot far
             dashboardTelemetry.update();
         }
 
@@ -66,7 +68,7 @@ public class AugustusAutoOpBlueBack extends LinearOpMode {
         timer.reset();
         while (timer.seconds() < 7.0) {
             webcam.loop(dashboardTelemetry);
-            yeeters.loop(gamepad1, dashboardTelemetry, 130);
+            yeeters.loop(gamepad1, dashboardTelemetry, targetDistance);
             dashboardTelemetry.update();
         }
 
@@ -74,7 +76,7 @@ public class AugustusAutoOpBlueBack extends LinearOpMode {
         yeeters.toggleYeeters();
         feeders.stop();
         //Move to collect the balls
-        driveBase.moveForward(driveBase.HALF_POWER_FRACTION, 600);
+        driveBase.moveForward(driveBase.HALF_POWER_FRACTION, 620);
         //Turn turn balls
         driveBase.rotateRight(driveBase.HALF_POWER_FRACTION, 1100);
         //pick up balls
@@ -89,7 +91,7 @@ public class AugustusAutoOpBlueBack extends LinearOpMode {
         driveBase.stop();
         feeders.stop();
         driveBase.moveForward(driveBase.HALF_POWER_FRACTION, 1300);
-        driveBase.rotateLeft(driveBase.HALF_POWER_FRACTION, 880);
+        driveBase.rotateLeft(driveBase.HALF_POWER_FRACTION, 825);
         driveBase.moveBackward(driveBase.HALF_POWER_FRACTION, 400);
         driveBase.stop();
         timer.reset();
@@ -100,7 +102,7 @@ public class AugustusAutoOpBlueBack extends LinearOpMode {
 
         while (timer.seconds() < 7.0) {
             webcam.loop(dashboardTelemetry);
-            yeeters.loop(gamepad1, dashboardTelemetry, 130);
+            yeeters.loop(gamepad1, dashboardTelemetry, targetDistance);
             dashboardTelemetry.update();
         }
         driveBase.moveForward(driveBase.HALF_POWER_FRACTION, 500);
