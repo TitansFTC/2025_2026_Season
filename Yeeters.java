@@ -16,7 +16,7 @@ public class Yeeters {
 
     private static final double EPSILON = 0.03;
     private static final double alpha = 800.0;
-    private static final double beta = 1.30;
+    private static final double beta = 1.10;
     private static final double yeeterNearVelocity = 865;
     private static final double yeeterFarVelocity = 1000;
 
@@ -71,7 +71,7 @@ public class Yeeters {
         }
 
         // Set yeeter velocities
-        if (yeeterActive) {
+        if (yeeterActive) {                  //Fix Swerve
             yeeterLeft.setVelocity(yeeterTargetVelocity);
             yeeterRight.setVelocity(yeeterTargetVelocity);
         } else {

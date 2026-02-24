@@ -53,8 +53,8 @@ public class DriveBase {
         }
 
         //Auto aim
-        if (gamepad.b && Math.abs(targetBearing) > 1 && Math.abs(targetBearing)< 180 ) {
-                powerFraction = Math.abs(targetBearing) / 30;
+        if (gamepad.b && Math.abs(targetBearing) > 0.75 && Math.abs(targetBearing)< 180 ) {
+                powerFraction = Math.abs(targetBearing) / 45;
 
                 if (targetBearing>0) {
                     leftFrontPower = FAST_POWER_FRACTION;
