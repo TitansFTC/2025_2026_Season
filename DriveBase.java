@@ -20,6 +20,9 @@ public class DriveBase {
     private DcMotorEx rightBack = null;
     private FtcDashboard dashboard = null;
     private Telemetry dashboardTelemetry = null;
+    double rel_tar_X;
+    double rel_tar_Y;
+
 
     public DriveBase(HardwareMap hardwareMap) {
         //Get motors from HM
@@ -107,6 +110,57 @@ public class DriveBase {
         rightBack.setPower(power);
         while (difference < duration) {
             difference = Math.abs(initial - rightBack.getCurrentPosition());
+        }
+    }
+    public void odoMove(double tar_pos_X, double tar_pos_Y, double tar_T, double cur_Pos_X, double cur_Pos_Y, double cur_Heading){
+
+        rel_tar_X = tar_pos_X - cur_Pos_X;
+        rel_tar_Y = tar_pos_Y - cur_Pos_Y;
+        if ((rel_tar_X != 0) || (rel_tar_Y != 0) || (tar_T != pos.getHeading(AngleUnit.DEGREES))) {
+            double beta = 90;
+            if (rel_tar_Y < 0) {
+                beta = -90;
+            }
+            if (rel_tar_X != 0 ){
+                beta = Math.toDegrees(Math.atan(rel_tar_Y/rel_tar_X));
+            }
+            if (rel_tar_X < 0){
+                beta = beta - 180;
+            }
+            A = 90 + C - beta;
+            rel_X = Math.sin(Math.toRadians(A));
+            rel_Y = Math.cos(Math.toRadians(A));
+            if (Math.abs(pos.getHeading(AngleUnit.DEGREES) - tar_T) >= 30) {
+                if (tar_T > pos.getHeading(AngleUnit.DEGREES)){
+                    rel_T = .5;
+                }
+                else {
+                    rel_T = -.5;
+                }
+            }
+            else {
+                rel_T = ((tar_T - pos.getHeading(AngleUnit.DEGREES) )/30) * .5;
+            }
+
+            double slow = 1;
+            if (dist_tar() < 200){
+                slow = dist_tar()/200;
+            }
+            double lfp = ((rel_Y + rel_X )  * slow - rel_T);
+            double rfp = ((rel_Y + -rel_X )  * slow + rel_T);
+            double lbp = ((rel_Y + -rel_X )  * slow - rel_T);
+            double rbp = ((rel_Y + rel_X )  * slow + rel_T);
+            if ((Math.abs(lfp) >= 1) || (Math.abs(rfp) >= 1) || (Math.abs(lbp) >= 1) || (Math.abs(rbp) >= 1)){
+                double k = Math.max(Math.max(Math.abs(lfp), Math.abs(rfp)), Math.max(Math.abs(rbp), Math.abs(lbp)));
+                lfp = lfp/k;
+                rfp = rfp/k;
+                rbp = rbp/k;
+                lbp = lbp/k;
+            }
+            lf.setPower(lfp);
+            rf.setPower(rfp);
+            lb.setPower(lbp);
+            rb.setPower(rbp);
         }
     }
 

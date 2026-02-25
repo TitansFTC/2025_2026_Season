@@ -32,7 +32,7 @@ public class Feeders {
 
         if (gamepad.a) {
             feederAPower = -0.8; // flipped during reconstruction
-            feederBPower = -0.1;
+            feederBPower = -0.2;
          //   feederCPower = -0.8;
             feederDPower = -1; // Reverse to hold back balls
         }
