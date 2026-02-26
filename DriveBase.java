@@ -20,6 +20,16 @@ public class DriveBase {
     private DcMotorEx rightBack = null;
     private FtcDashboard dashboard = null;
     private Telemetry dashboardTelemetry = null;
+    double rel_tar_X;
+    double rel_tar_Y;
+    double rel_X;
+    double rel_Y;
+    double A;
+    double C;
+    double rel_T;
+
+
+
 
     public DriveBase(HardwareMap hardwareMap) {
         //Get motors from HM
@@ -109,6 +119,57 @@ public class DriveBase {
             difference = Math.abs(initial - rightBack.getCurrentPosition());
         }
     }
+    public void odoMove(double tar_pos_X, double tar_pos_Y, double tar_T, double cur_Pos_X, double cur_Pos_Y, double cur_Heading){
+
+        rel_tar_X = tar_pos_X - cur_Pos_X;
+        rel_tar_Y = tar_pos_Y - cur_Pos_Y;
+        if ((rel_tar_X != 0) || (rel_tar_Y != 0) || (tar_T != cur_Heading)) {
+            double beta = 90;
+            if (rel_tar_Y < 0) {
+                beta = -90;
+            }
+            if (rel_tar_X != 0 ){
+                beta = Math.toDegrees(Math.atan(rel_tar_Y/rel_tar_X));
+            }
+            if (rel_tar_X < 0){
+                beta = beta - 180;
+            }
+            A = 90 + C - beta;
+            rel_X = Math.sin(Math.toRadians(A));
+            rel_Y = Math.cos(Math.toRadians(A));
+            if (Math.abs(cur_Heading - tar_T) >= 30) {
+                if (tar_T > cur_Heading){
+                    rel_T = .5;
+                }
+                else {
+                    rel_T = -.5;
+                }
+            }
+            else {
+                rel_T = ((tar_T - cur_Heading )/30) * .5;
+            }
+
+            double slow = 1;
+            if (Math.sqrt(Math.pow((tar_pos_X - cur_Pos_X), 2) + (Math.pow((tar_pos_Y - cur_Pos_Y), 2))) < 7.87){
+                slow = Math.sqrt(Math.pow((tar_pos_X - cur_Pos_X), 2) + (Math.pow((tar_pos_Y - cur_Pos_Y), 2)))/5080;
+            }
+            double lfp = ((rel_Y + rel_X )  * slow - rel_T);
+            double rfp = ((rel_Y + -rel_X )  * slow + rel_T);
+            double lbp = ((rel_Y + -rel_X )  * slow - rel_T);
+            double rbp = ((rel_Y + rel_X )  * slow + rel_T);
+            if ((Math.abs(lfp) >= 1) || (Math.abs(rfp) >= 1) || (Math.abs(lbp) >= 1) || (Math.abs(rbp) >= 1)){
+                double k = Math.max(Math.max(Math.abs(lfp), Math.abs(rfp)), Math.max(Math.abs(rbp), Math.abs(lbp)));
+                lfp = lfp/k;
+                rfp = rfp/k;
+                rbp = rbp/k;
+                lbp = lbp/k;
+            }
+            leftFront.setPower(lfp);
+            rightFront.setPower(rfp);
+            leftBack.setPower(lbp);
+            rightBack.setPower(rbp);
+        }
+    }
 
     public void moveBackward(double power, int duration) {
         int initial = rightBack.getCurrentPosition();
@@ -171,4 +232,5 @@ public class DriveBase {
             difference = Math.abs(initial - rightBack.getCurrentPosition());
         }
     }
+
 }
