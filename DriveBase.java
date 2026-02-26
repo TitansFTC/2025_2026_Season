@@ -22,6 +22,13 @@ public class DriveBase {
     private Telemetry dashboardTelemetry = null;
     double rel_tar_X;
     double rel_tar_Y;
+    double rel_X;
+    double rel_Y;
+    double A;
+    double C;
+    double rel_T;
+
+
 
 
     public DriveBase(HardwareMap hardwareMap) {
@@ -116,7 +123,7 @@ public class DriveBase {
 
         rel_tar_X = tar_pos_X - cur_Pos_X;
         rel_tar_Y = tar_pos_Y - cur_Pos_Y;
-        if ((rel_tar_X != 0) || (rel_tar_Y != 0) || (tar_T != pos.getHeading(AngleUnit.DEGREES))) {
+        if ((rel_tar_X != 0) || (rel_tar_Y != 0) || (tar_T != cur_Heading)) {
             double beta = 90;
             if (rel_tar_Y < 0) {
                 beta = -90;
@@ -130,8 +137,8 @@ public class DriveBase {
             A = 90 + C - beta;
             rel_X = Math.sin(Math.toRadians(A));
             rel_Y = Math.cos(Math.toRadians(A));
-            if (Math.abs(pos.getHeading(AngleUnit.DEGREES) - tar_T) >= 30) {
-                if (tar_T > pos.getHeading(AngleUnit.DEGREES)){
+            if (Math.abs(cur_Heading - tar_T) >= 30) {
+                if (tar_T > cur_Heading){
                     rel_T = .5;
                 }
                 else {
@@ -139,12 +146,12 @@ public class DriveBase {
                 }
             }
             else {
-                rel_T = ((tar_T - pos.getHeading(AngleUnit.DEGREES) )/30) * .5;
+                rel_T = ((tar_T - cur_Heading )/30) * .5;
             }
 
             double slow = 1;
-            if (dist_tar() < 200){
-                slow = dist_tar()/200;
+            if (Math.sqrt(Math.pow((tar_pos_X - cur_Pos_X), 2) + (Math.pow((tar_pos_Y - cur_Pos_Y), 2))) < 7.87){
+                slow = Math.sqrt(Math.pow((tar_pos_X - cur_Pos_X), 2) + (Math.pow((tar_pos_Y - cur_Pos_Y), 2)))/5080;
             }
             double lfp = ((rel_Y + rel_X )  * slow - rel_T);
             double rfp = ((rel_Y + -rel_X )  * slow + rel_T);
@@ -157,10 +164,10 @@ public class DriveBase {
                 rbp = rbp/k;
                 lbp = lbp/k;
             }
-            lf.setPower(lfp);
-            rf.setPower(rfp);
-            lb.setPower(lbp);
-            rb.setPower(rbp);
+            leftFront.setPower(lfp);
+            rightFront.setPower(rfp);
+            leftBack.setPower(lbp);
+            rightBack.setPower(rbp);
         }
     }
 
@@ -225,4 +232,5 @@ public class DriveBase {
             difference = Math.abs(initial - rightBack.getCurrentPosition());
         }
     }
+
 }
