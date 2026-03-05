@@ -17,6 +17,7 @@ public class Intake {
 
         //reverse direction of motor
         intake.setDirection(DcMotorEx.Direction.REVERSE);
+        intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
     public void loop(Gamepad gamepad, Telemetry telemetry) {
