@@ -44,8 +44,19 @@ public class AugustusTeleop extends OpMode {
     public void loop() {
         // Loop drive base with gamepad 1
         webcam.loop(dashboardTelemetry);
-        driveBase.loop(gamepad1, dashboardTelemetry, webcam.getTargetBearing());
-        odometry.loop(gamepad1, dashboardTelemetry, 0);
+        double cur_X_Pos =0;
+        double cur_Y_Pos=0;
+        double cur_H=0;
+
+        if (gamepad1.left_trigger>.8){
+            odometry.loop(gamepad1, dashboardTelemetry, 0);
+            cur_X_Pos= odometry.cur_X_pos();
+            cur_Y_Pos=odometry.cur_Y_pos();
+            cur_H=odometry.cur_H();
+        }
+
+
+        driveBase.loop(gamepad1, dashboardTelemetry, webcam.getTargetBearing(), cur_X_Pos, cur_Y_Pos, cur_H);
 
         // Loop IFY with gamepad2
         intake.loop(gamepad2, dashboardTelemetry);
