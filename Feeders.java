@@ -5,81 +5,67 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class Feeders {
-    private CRServo feederA = null;
-   // private CRServo feederB = null;
-    //private CRServo feederC = null;
-    private DcMotor feederB = null;
+    private static final double kP = 150;
+    private static final double kI = 0.0;
+    private static final double kD = 0.0;
+    private static final double kF = 10;
+    private static final double CHAIN_FAST_POWER = -1000;
+    private static final double CHAIN_SLOW_POWER = -100;
 
-    private CRServo feederD = null;
+    private CRServo feederTop = null;
+    private DcMotorEx feederBottom = null;
 
     public Feeders(HardwareMap hardwareMap) {
-        feederA = hardwareMap.get(CRServo.class, "feederA");
-        feederB = hardwareMap.get(DcMotor.class, "feederB");
-     //   feederC = hardwareMap.get(CRServo.class, "feederC");
-        feederD = hardwareMap.get(CRServo.class, "feederD");
+        feederTop = hardwareMap.get(CRServo.class, "feederTop");
+
+        feederBottom = hardwareMap.get(DcMotorEx.class, "feederBottom");
+        PIDFCoefficients pidfCoefficients = new PIDFCoefficients(kP, 0, 0, kF);
+        feederBottom.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        feederBottom.setPIDFCoefficients(DcMotorEx.RunMode.RUN_USING_ENCODER, pidfCoefficients);
+        feederBottom.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
     public void loop(Gamepad gamepad, Telemetry telemetry, boolean yeetersReady) {
         //Activate feeder servos if x or b is pressed
-        double feederAPower = 0;
-        double feederBPower = 0;
-        //double feederCPower = 0;
-        double feederDPower = 0;
+        double feederTopPower = 0;
+        double feederBottomVelocity = 0;
 
         if (gamepad.a) {
-            feederAPower = -0.8; // flipped during reconstruction
-            feederBPower = -0.25;
-         //   feederCPower = -0.8;
-            feederDPower = -1; // Reverse to hold back balls
+            feederTopPower = -1; // flipped during reconstruction
+            feederBottomVelocity = CHAIN_SLOW_POWER;
         }
         else if (gamepad.b) {
-            feederAPower = -1; // flipped during reconstruction
-            feederBPower = -1;
-          //  feederCPower = -1;
-            feederDPower = -1;
+            feederTopPower = 1; // flipped during reconstruction
+            feederBottomVelocity = CHAIN_FAST_POWER;
         }
 
-        if (gamepad.b){
-            feederDPower = 1;
-        }
-
-        feederA.setPower(feederAPower);
-        feederB.setPower(feederBPower);
-       // feederC.setPower(feederCPower);
-        feederD.setPower(feederDPower);
+        feederTop.setPower(feederTopPower);
+        feederBottom.setVelocity(feederBottomVelocity);
 
         //add telemetry
-        telemetry.addData("feederAPower", feederAPower );
-        telemetry.addData("feederBPower" , feederBPower);
-      //  telemetry.addData("feederCPower" , feederCPower);
-        telemetry.addData("feederDPower", feederDPower);
+        telemetry.addData("feederTopPower", feederTopPower );
+        telemetry.addData("feederBottomVelocity" , feederBottomVelocity);
     }
 
     public void enableFeeders(boolean shoot) {
         if (shoot) {
-            feederA.setPower(-1);
-            feederB.setPower(-1);
-            //feederC.setPower(-1);
-            feederD.setPower(1);
+            feederTop.setPower(1);
+            feederBottom.setVelocity(CHAIN_FAST_POWER);
         }
         else{
-            feederA.setPower(-0.8);
-            feederB.setPower(-0.8);
-           // feederC.setPower(-0.8);
-            feederD.setPower(-1);
+            feederTop.setPower(-1);
+            feederBottom.setVelocity(CHAIN_SLOW_POWER);
         }
     }
 
     public void stop() {
         //stop all servos
-        feederA.setPower(0);
-
-        feederB.setPower(0);
-        //feederC.setPower(0);
-        feederD.setPower(0);
+        feederTop.setPower(0);
+        feederBottom.setPower(0);
     }
 }
