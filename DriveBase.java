@@ -20,16 +20,9 @@ public class DriveBase {
     private DcMotorEx rightBack = null;
     private FtcDashboard dashboard = null;
     private Telemetry dashboardTelemetry = null;
-    double rel_tar_X;
-    double rel_tar_Y;
-    double rel_X;
-    double rel_Y;
-    double A;
-    double C;
-    double rel_T;
-
-
-
+    private double tar_X;
+    private double tar_Y;
+    private double tar_H;
 
     public DriveBase(HardwareMap hardwareMap) {
         //Get motors from HM
@@ -47,7 +40,7 @@ public class DriveBase {
         dashboardTelemetry = dashboard.getTelemetry();
     }
 
-    public void loop(Gamepad gamepad, Telemetry telemetry, double targetBearing) {
+    public void loop(Gamepad gamepad, Telemetry telemetry, double targetBearing, double cur_Pos_X, double cur_Pos_Y, double cur_H) {
         //Compute left motor powers
         double leftFrontPower = (gamepad.left_stick_y - gamepad.right_stick_x) - gamepad.left_stick_x;
         double leftBackPower = (gamepad.left_stick_y + gamepad.right_stick_x) - gamepad.left_stick_x;
@@ -60,6 +53,15 @@ public class DriveBase {
         double powerFraction = FAST_POWER_FRACTION;
         if (gamepad.right_trigger > 0.8) {
             powerFraction = SLOW_POWER_FRACTION;
+        }
+        //Hold position
+        if (gamepad.leftTriggerWasPressed()){
+            tar_X = cur_Pos_X;
+            tar_Y = cur_Pos_Y;
+            tar_H = cur_H;
+        }
+        if (gamepad.left_trigger>.8){
+            holdPosition(tar_X, tar_Y, tar_H, cur_Pos_X, cur_Pos_Y, cur_H);
         }
 
         //Auto aim
@@ -81,8 +83,6 @@ public class DriveBase {
                 }
 
         }
-
-
 
         //Set left and right motor powers
         leftFront.setPower(leftFrontPower * powerFraction);
@@ -121,8 +121,8 @@ public class DriveBase {
     }
     public void odoMove(double tar_pos_X, double tar_pos_Y, double tar_T, double cur_Pos_X, double cur_Pos_Y, double cur_Heading){
 
-        rel_tar_X = tar_pos_X - cur_Pos_X;
-        rel_tar_Y = tar_pos_Y - cur_Pos_Y;
+       double rel_tar_X = tar_pos_X - cur_Pos_X;
+       double rel_tar_Y = tar_pos_Y - cur_Pos_Y;
         if ((rel_tar_X != 0) || (rel_tar_Y != 0) || (tar_T != cur_Heading)) {
             double beta = 90;
             if (rel_tar_Y < 0) {
@@ -134,9 +134,11 @@ public class DriveBase {
             if (rel_tar_X < 0){
                 beta = beta - 180;
             }
-            A = 90 + C - beta;
-            rel_X = Math.sin(Math.toRadians(A));
-            rel_Y = Math.cos(Math.toRadians(A));
+            double C = 0; // What is C?
+            double A = 90 + C - beta;
+            double rel_X = Math.sin(Math.toRadians(A));
+            double rel_Y = Math.cos(Math.toRadians(A));
+            double rel_T = 0;
             if (Math.abs(cur_Heading - tar_T) >= 30) {
                 if (tar_T > cur_Heading){
                     rel_T = .5;
@@ -231,6 +233,10 @@ public class DriveBase {
         while (difference < duration) {
             difference = Math.abs(initial - rightBack.getCurrentPosition());
         }
+    }
+
+    public void holdPosition(double tar_Pos_X, double tar_Pos_Y, double tar_H, double cur_Pos_X, double cur_Pos_Y, double cur_H) {
+        odoMove(tar_Pos_X, tar_Pos_Y, tar_H, cur_Pos_X, cur_Pos_Y, cur_H);
     }
 
 }
