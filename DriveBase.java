@@ -12,7 +12,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 public class DriveBase {
     public static final double FAST_POWER_FRACTION = 1.0;
     public static final double SLOW_POWER_FRACTION = 0.2;
-    public static final double HALF_POWER_FRACTION = .5;
+    public static final double HALF_POWER_FRACTION = 0.5;
 
     private DcMotorEx leftFront = null;
     private DcMotorEx leftBack = null;
@@ -64,9 +64,9 @@ public class DriveBase {
             holdPosition(tar_X, tar_Y, tar_H, cur_Pos_X, cur_Pos_Y, cur_H);
         }
 
-        //Auto aim
-        if (gamepad.b && Math.abs(targetBearing) > 0.75 && Math.abs(targetBearing)< 180 ) {
-                powerFraction = Math.abs(targetBearing) / 45;
+        // Auto aim
+        if (gamepad.b && Math.abs(targetBearing) > 0.5 && Math.abs(targetBearing) < 180) {
+                powerFraction = Math.max(SLOW_POWER_FRACTION*0.50, Math.abs(targetBearing) / 100);
 
                 if (targetBearing>0) {
                     leftFrontPower = FAST_POWER_FRACTION;
