@@ -14,8 +14,8 @@ public class Feeders {
     private static final double kI = 0.0;
     private static final double kD = 0.0;
     private static final double kF = 10;
-    private static final double CHAIN_FAST_POWER = -1000;
-    private static final double CHAIN_SLOW_POWER = -100;
+    private static final double CHAIN_FAST_VELOCITY = -1000;
+    private static final double CHAIN_SLOW_VELOCITY = -50;
 
     private CRServo feederTop = null;
     private DcMotorEx feederBottom = null;
@@ -37,11 +37,11 @@ public class Feeders {
 
         if (gamepad.a) {
             feederTopPower = -1; // flipped during reconstruction
-            feederBottomVelocity = CHAIN_SLOW_POWER;
+            feederBottomVelocity = CHAIN_SLOW_VELOCITY;
         }
         else if (gamepad.b) {
             feederTopPower = 1; // flipped during reconstruction
-            feederBottomVelocity = CHAIN_FAST_POWER;
+            feederBottomVelocity = CHAIN_FAST_VELOCITY;
         }
 
         feederTop.setPower(feederTopPower);
@@ -55,11 +55,11 @@ public class Feeders {
     public void enableFeeders(boolean shoot) {
         if (shoot) {
             feederTop.setPower(1);
-            feederBottom.setVelocity(CHAIN_FAST_POWER);
+            feederBottom.setVelocity(CHAIN_FAST_VELOCITY);
         }
         else{
             feederTop.setPower(-1);
-            feederBottom.setVelocity(CHAIN_SLOW_POWER);
+            feederBottom.setVelocity(CHAIN_SLOW_VELOCITY);
         }
     }
 
