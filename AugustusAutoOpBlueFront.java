@@ -100,27 +100,18 @@ public class AugustusAutoOpBlueFront extends LinearOpMode {
         driveBase.stop();
         sleep(250);
 
-        driveBase.moveForward(driveBase.HALF_POWER_FRACTION, 300);
-        feeders.stop();
-
-
-        // Turn off Yeeters and Feeders
-
         // Move Forward
-        driveBase.moveForward(driveBase.HALF_POWER_FRACTION, 900);
+        driveBase.moveForward(driveBase.HALF_POWER_FRACTION, 1200);
         driveBase.stop();
         sleep(250);
 
         driveBase.rotateLeft(driveBase.HALF_POWER_FRACTION, 1075);
         driveBase.stop();
         sleep(250);
-        //yeeters.toggleYeeters();
 
         feeders.enableFeeders(true);
-        intake.enableIntake();
 
         timer.reset();
-
         while (timer.seconds() < 3.0) {
             webcam.loop(dashboardTelemetry);
             yeeters.loop(gamepad1, dashboardTelemetry, webcam.getTargetDistance());
