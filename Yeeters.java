@@ -9,16 +9,16 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class Yeeters {
-    private static final double kP = 250;
+    private static final double kP = 200;
     private static final double kI = 0.0;
     private static final double kD = 0.0;
-    private static final double kF = 13.2;
+    private static final double kF = 12.5;
 
     private static final double EPSILON = 0.03;
-    private static final double alpha = 700.9249954988815;
-    private static final double beta = 2.266709736181466;
-    private static final double yeeterNearVelocity = 850;
-    private static final double yeeterFarVelocity = 1000;
+    private static final double alpha = 700.0; // 715
+    private static final double beta = 1.65; // 160
+    private static final double yeeterNearVelocity = 805;
+    private static final double yeeterFarVelocity = 960;
 
     private DcMotorEx yeeterLeft = null;
     private DcMotorEx yeeterRight = null;
@@ -57,9 +57,9 @@ public class Yeeters {
             yeeterTargetVelocity = yeeterFarVelocity;
         } else if (yeeterManual) {
             if (gamepad.dpadUpWasPressed()) {
-                yeeterTargetVelocity += 10;
+                yeeterTargetVelocity += 5;
             } else if(gamepad.dpadDownWasPressed()) {
-                yeeterTargetVelocity -= 10;
+                yeeterTargetVelocity -= 5;
             }
         } else {
             if (distance == 0) {
@@ -99,7 +99,7 @@ public class Yeeters {
     }
 
     public double computeYeeterVelocity(double distance) {
-        return alpha + beta*distance; // Boost constant
+        return alpha + beta * distance;
     }
 
     public boolean isReady() {
