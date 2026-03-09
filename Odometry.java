@@ -31,34 +31,24 @@ public class Odometry {
         odo.resetPosAndIMU();
 
     }
-    public void loop(Gamepad gamepad, Telemetry telemetry, double targetBearing) {
+    public void loop(Telemetry telemetry) {
         odo.update();
         pos = odo.getPosition();
-        odo.update();
+
         YawPitchRollAngles orientation = imu.getRobotYawPitchRollAngles();
         double angle = odo.getHeading(AngleUnit.DEGREES);
+
         telemetry.addData("X offset: ", pos.getX(DistanceUnit.INCH));
         telemetry.addData("Y offset: ", pos.getY(DistanceUnit.INCH));
         telemetry.addData("Gyro Heading: ", angle);
     }
-    public double cur_X_pos(){
-        odo.update();
-        pos=odo.getPosition();
-        odo.update();
+    public double cur_pos_x() {
         return pos.getX(DistanceUnit.INCH);
     }
-    public double cur_Y_pos(){
-        odo.update();
-        pos=odo.getPosition();
-        odo.update();
+    public double cur_pos_y(){
         return pos.getY(DistanceUnit.INCH);
     }
-    public double cur_H(){
-        odo.update();
-        pos=odo.getPosition();
+    public double cur_angle(){
         return odo.getHeading(AngleUnit.DEGREES);
-
     }
-
-
 }
