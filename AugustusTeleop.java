@@ -42,28 +42,26 @@ public class AugustusTeleop extends OpMode {
 
     @Override
     public void loop() {
-        // Loop drive base with gamepad 1
+        // Loop webcam, odometry (optional), drive base with gamepad 1
         webcam.loop(dashboardTelemetry);
-        double cur_X_Pos =0;
-        double cur_Y_Pos=0;
-        double cur_H=0;
+
+        double cur_pos_x = 0;
+        double cur_pos_y = 0;
+        double cur_angle = 0;
 
         if (gamepad1.left_trigger>.8){
-            odometry.loop(gamepad1, dashboardTelemetry, 0);
-            cur_X_Pos= odometry.cur_X_pos();
-            cur_Y_Pos=odometry.cur_Y_pos();
-            cur_H=odometry.cur_H();
+            odometry.loop(dashboardTelemetry);
+            cur_pos_x = odometry.cur_pos_x();
+            cur_pos_y = odometry.cur_pos_y();
+            cur_angle = odometry.cur_angle();
         }
 
-
-        driveBase.loop(gamepad1, dashboardTelemetry, webcam.getTargetBearing(), cur_X_Pos, cur_Y_Pos, cur_H);
+        driveBase.loop(gamepad1, dashboardTelemetry, webcam.getTargetBearing(), cur_pos_x, cur_pos_y, cur_angle);
 
         // Loop IFY with gamepad2
         intake.loop(gamepad2, dashboardTelemetry);
         feeders.loop(gamepad2, dashboardTelemetry, yeeters.isReady());
         yeeters.loop(gamepad2, dashboardTelemetry, webcam.getTargetDistance());
-
-        //Update A tags
 
         //update dashboard
         dashboardTelemetry.update();
@@ -75,7 +73,6 @@ public class AugustusTeleop extends OpMode {
         driveBase.stop();
         intake.stop();
         feeders.stop();
-
         yeeters.stop();
     }
 }
