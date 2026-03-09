@@ -46,8 +46,9 @@ public class AugustusAutoOpRedFront extends LinearOpMode {
         // Activate Yeeters and move backward
         yeeters.toggleYeeters();
 
-        driveBase.moveBackward(driveBase.HALF_POWER_FRACTION, 1725);
+        driveBase.moveBackward(driveBase.HALF_POWER_FRACTION, 1750);
         driveBase.stop();
+        sleep(250);
 
         // Turn on Yeeters
         timer.reset();
@@ -62,53 +63,89 @@ public class AugustusAutoOpRedFront extends LinearOpMode {
         intake.enableIntake();
         timer.reset();
 
-        while (timer.seconds() < 7.0) {
+        while (timer.seconds() < 3.0) {
             webcam.loop(dashboardTelemetry);
             yeeters.loop(gamepad1, dashboardTelemetry, webcam.getTargetDistance());
             dashboardTelemetry.update();
         }
-        yeeters.toggleYeeters();
+        //yeeters.toggleYeeters();
 
-        //Turn
-        driveBase.rotateLeft(driveBase.HALF_POWER_FRACTION, 1100);
+        // 3 Pt Turn: Rotate, move back, finish rotation
+        driveBase.rotateLeft(driveBase.HALF_POWER_FRACTION, 300);
         driveBase.stop();
+        sleep(250);
+
+        driveBase.moveBackward(driveBase.HALF_POWER_FRACTION, 150);
+        driveBase.stop();
+        sleep(250);
+
+        driveBase.rotateLeft(driveBase.HALF_POWER_FRACTION, 825);
+        driveBase.stop();
+        sleep(250);
 
         //Turn Intake On
         //intake.enableIntake();
         feeders.enableFeeders(false);
 
-        //Move Forward
-        driveBase.moveBackward(driveBase.SLOW_POWER_FRACTION, 1450);
+        //Move
+        driveBase.moveBackward(driveBase.FAST_POWER_FRACTION, 200);
         driveBase.stop();
+        sleep(250);
+
+        driveBase.moveBackward(driveBase.SLOW_POWER_FRACTION, 900);
+        driveBase.stop();
+        sleep(250);
+
+        // Move Forward
         driveBase.moveForward(driveBase.HALF_POWER_FRACTION, 300);
+        driveBase.stop();
+        sleep(250);
+
         feeders.stop();
 
-
-        // Turn off Yeeters and Feeders
-
-        //Move Forward
-        driveBase.moveForward(driveBase.HALF_POWER_FRACTION, 900);
+        driveBase.moveForward(driveBase.HALF_POWER_FRACTION, 700);
         driveBase.stop();
+        sleep(250);
 
-        driveBase.rotateRight(driveBase.HALF_POWER_FRACTION, 1150);
+        driveBase.rotateRight(driveBase.HALF_POWER_FRACTION, 1275);
         driveBase.stop();
-        sleep(1000);
-        yeeters.toggleYeeters();
+        sleep(250);
+
         feeders.enableFeeders(true);
-        intake.enableIntake();
 
         timer.reset();
-
-        while (timer.seconds() < 8.0) {
+        while (timer.seconds() < 3.0) {
             webcam.loop(dashboardTelemetry);
             yeeters.loop(gamepad1, dashboardTelemetry, webcam.getTargetDistance());
             dashboardTelemetry.update();
         }
         yeeters.toggleYeeters();
         feeders.stop();
+
         driveBase.strafeLeft(driveBase.HALF_POWER_FRACTION, 1000);
+        driveBase.stop();
+        sleep(250);
+
+        driveBase.rotateLeft(driveBase.HALF_POWER_FRACTION, 1000);
+        sleep(250);
+        feeders.enableFeeders(false);
+
+        driveBase.strafeRight(driveBase.HALF_POWER_FRACTION, 700);
+        driveBase.stop();
+        sleep(250);
+
+        driveBase.moveBackward(driveBase.SLOW_POWER_FRACTION, 975);
+        driveBase.stop();
+        sleep(250);
+
+        driveBase.rotateRight(driveBase.HALF_POWER_FRACTION, 625);
+        driveBase.stop();
+        sleep(250);
+
+        driveBase.moveForward(driveBase.HALF_POWER_FRACTION, 250);
+        driveBase.stop();
+
+        feeders.stop();
+        intake.stop();
     }
 }
-
-
-
