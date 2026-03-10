@@ -79,7 +79,7 @@ public class AugustusAutoOpBlueFront extends LinearOpMode {
         driveBase.stop();
         sleep(250);
 
-        driveBase.moveBackward(driveBase.HALF_POWER_FRACTION, 200);
+        driveBase.moveBackward(driveBase.HALF_POWER_FRACTION, 175);
         driveBase.stop();
         sleep(250);
 
@@ -92,11 +92,7 @@ public class AugustusAutoOpBlueFront extends LinearOpMode {
         feeders.enableFeeders(false);
 
         //Move
-        driveBase.moveBackward(driveBase.FAST_POWER_FRACTION, 300);
-        driveBase.stop();
-        sleep(250);
-
-        driveBase.moveBackward(driveBase.SLOW_POWER_FRACTION, 850);
+        driveBase.moveBackward(driveBase.SLOW_POWER_FRACTION, 1575);
         driveBase.stop();
         sleep(250);
 
@@ -134,7 +130,7 @@ public class AugustusAutoOpBlueFront extends LinearOpMode {
         sleep(250);
         feeders.enableFeeders(false);
 
-        driveBase.strafeLeft(driveBase.HALF_POWER_FRACTION, 650);
+        driveBase.strafeLeft(driveBase.HALF_POWER_FRACTION, 625);
         driveBase.stop();
         sleep(250);
 

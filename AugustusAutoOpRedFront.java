@@ -88,11 +88,7 @@ public class AugustusAutoOpRedFront extends LinearOpMode {
         feeders.enableFeeders(false);
 
         //Move
-        driveBase.moveBackward(driveBase.FAST_POWER_FRACTION, 200);
-        driveBase.stop();
-        sleep(250);
-
-        driveBase.moveBackward(driveBase.SLOW_POWER_FRACTION, 900);
+        driveBase.moveBackward(driveBase.SLOW_POWER_FRACTION, 1400);
         driveBase.stop();
         sleep(250);
 
