@@ -94,7 +94,7 @@ public class AugustusAutoOpBlueFront extends LinearOpMode {
         //Move
         driveBase.moveBackward(driveBase.SLOW_POWER_FRACTION, 1600);
         driveBase.stop();
-        sleep(250);
+        sleep(1000);
 
         // Move Forward
         driveBase.moveForward(driveBase.HALF_POWER_FRACTION, 300);
