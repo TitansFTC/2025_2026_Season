@@ -68,7 +68,7 @@ public class AugustusAutoOpRedFront extends LinearOpMode {
             yeeters.loop(gamepad1, dashboardTelemetry, webcam.getTargetDistance());
             dashboardTelemetry.update();
         }
-        //yeeters.toggleYeeters();
+        yeeters.toggleYeeters();
 
         // 3 Pt Turn: Rotate, move back, finish rotation
         driveBase.rotateLeft(driveBase.HALF_POWER_FRACTION, 300);
@@ -88,18 +88,16 @@ public class AugustusAutoOpRedFront extends LinearOpMode {
         feeders.enableFeeders(false);
 
         //Move
-        driveBase.moveBackward(driveBase.SLOW_POWER_FRACTION, 1400);
+        driveBase.moveBackward(driveBase.SLOW_POWER_FRACTION, 1500);
         driveBase.stop();
-        sleep(250);
+        sleep(1000);
 
         // Move Forward
         driveBase.moveForward(driveBase.HALF_POWER_FRACTION, 300);
-        driveBase.stop();
-        sleep(250);
-
         feeders.stop();
+        intake.stop();
 
-        driveBase.moveForward(driveBase.HALF_POWER_FRACTION, 700);
+        driveBase.moveForward(driveBase.HALF_POWER_FRACTION, 800);
         driveBase.stop();
         sleep(250);
 
@@ -107,7 +105,16 @@ public class AugustusAutoOpRedFront extends LinearOpMode {
         driveBase.stop();
         sleep(250);
 
+        // Turn yeeters back on, begin feeding
+        yeeters.toggleYeeters();
+        timer.reset();
+        while (timer.seconds() < 1.0) {
+            webcam.loop(dashboardTelemetry);
+            yeeters.loop(gamepad1, dashboardTelemetry, webcam.getTargetDistance()); // Big number to shoot far
+            dashboardTelemetry.update();
+        }
         feeders.enableFeeders(true);
+        intake.enableIntake();
 
         timer.reset();
         while (timer.seconds() < 3.0) {
@@ -117,6 +124,7 @@ public class AugustusAutoOpRedFront extends LinearOpMode {
         }
         yeeters.toggleYeeters();
         feeders.stop();
+        intake.stop();
 
         driveBase.strafeLeft(driveBase.HALF_POWER_FRACTION, 1000);
         driveBase.stop();
@@ -125,6 +133,7 @@ public class AugustusAutoOpRedFront extends LinearOpMode {
         driveBase.rotateLeft(driveBase.HALF_POWER_FRACTION, 1000);
         sleep(250);
         feeders.enableFeeders(false);
+        intake.enableIntake();
 
         driveBase.strafeRight(driveBase.HALF_POWER_FRACTION, 700);
         driveBase.stop();
