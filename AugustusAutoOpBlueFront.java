@@ -46,11 +46,11 @@ public class AugustusAutoOpBlueFront extends LinearOpMode {
         // Activate Yeeters and move backward
         yeeters.toggleYeeters();
 
-        driveBase.moveBackward(driveBase.HALF_POWER_FRACTION, 1825);
+        driveBase.moveBackward(driveBase.HALF_POWER_FRACTION, 1800);
         driveBase.stop();
-        sleep(250);
+        sleep(500);
 
-        driveBase.rotateRight(driveBase.HALF_POWER_FRACTION, 10);
+        driveBase.rotateRight(driveBase.SLOW_POWER_FRACTION, 75);
         driveBase.stop();
         sleep(250);
 
@@ -75,7 +75,7 @@ public class AugustusAutoOpBlueFront extends LinearOpMode {
         yeeters.toggleYeeters();
 
         // 3 Pt Turn: Rotate, move back, finish rotation
-        driveBase.rotateRight(driveBase.HALF_POWER_FRACTION, 275);
+        driveBase.rotateRight(driveBase.HALF_POWER_FRACTION, 300);
         driveBase.stop();
         sleep(250);
 
@@ -92,22 +92,20 @@ public class AugustusAutoOpBlueFront extends LinearOpMode {
         feeders.enableFeeders(false);
 
         //Move
-        driveBase.moveBackward(driveBase.SLOW_POWER_FRACTION, 1575);
+        driveBase.moveBackward(driveBase.SLOW_POWER_FRACTION, 1600);
         driveBase.stop();
         sleep(250);
 
         // Move Forward
         driveBase.moveForward(driveBase.HALF_POWER_FRACTION, 300);
-        driveBase.stop();
-        sleep(250);
-
         feeders.stop();
+        intake.stop();
 
-        driveBase.moveForward(driveBase.HALF_POWER_FRACTION, 700);
+        driveBase.moveForward(driveBase.HALF_POWER_FRACTION, 750);
         driveBase.stop();
         sleep(250);
 
-        driveBase.rotateLeft(driveBase.HALF_POWER_FRACTION, 1050);
+        driveBase.rotateLeft(driveBase.HALF_POWER_FRACTION, 1000);
         driveBase.stop();
         sleep(250);
 
@@ -120,6 +118,7 @@ public class AugustusAutoOpBlueFront extends LinearOpMode {
             dashboardTelemetry.update();
         }
         feeders.enableFeeders(true);
+        intake.enableIntake();
 
         timer.reset();
         while (timer.seconds() < 3.0) {
@@ -129,20 +128,22 @@ public class AugustusAutoOpBlueFront extends LinearOpMode {
         }
         yeeters.toggleYeeters();
         feeders.stop();
+        intake.stop();
 
-        driveBase.strafeRight(driveBase.HALF_POWER_FRACTION, 1000);
+        driveBase.strafeRight(driveBase.HALF_POWER_FRACTION, 750);
         driveBase.stop();
         sleep(250);
 
-        driveBase.rotateRight(driveBase.HALF_POWER_FRACTION, 1000);
+        driveBase.rotateRight(driveBase.HALF_POWER_FRACTION, 900);
         sleep(250);
         feeders.enableFeeders(false);
+        intake.enableIntake();
 
-        driveBase.strafeLeft(driveBase.HALF_POWER_FRACTION, 675);
+        driveBase.strafeLeft(driveBase.HALF_POWER_FRACTION, 900);
         driveBase.stop();
         sleep(250);
 
-        driveBase.moveBackward(driveBase.SLOW_POWER_FRACTION, 975);
+        driveBase.moveBackward(driveBase.SLOW_POWER_FRACTION, 950);
         driveBase.stop();
         sleep(250);
 
