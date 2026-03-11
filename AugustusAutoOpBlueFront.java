@@ -46,11 +46,11 @@ public class AugustusAutoOpBlueFront extends LinearOpMode {
         // Activate Yeeters and move backward
         yeeters.toggleYeeters();
 
-        driveBase.moveBackward(driveBase.HALF_POWER_FRACTION, 1950);
+        driveBase.moveBackward(driveBase.HALF_POWER_FRACTION, 1825);
         driveBase.stop();
         sleep(250);
 
-        driveBase.rotateRight(driveBase.HALF_POWER_FRACTION, 12);
+        driveBase.rotateRight(driveBase.HALF_POWER_FRACTION, 10);
         driveBase.stop();
         sleep(250);
 
@@ -72,7 +72,7 @@ public class AugustusAutoOpBlueFront extends LinearOpMode {
             yeeters.loop(gamepad1, dashboardTelemetry, webcam.getTargetDistance());
             dashboardTelemetry.update();
         }
-        //yeeters.toggleYeeters();
+        yeeters.toggleYeeters();
 
         // 3 Pt Turn: Rotate, move back, finish rotation
         driveBase.rotateRight(driveBase.HALF_POWER_FRACTION, 275);
@@ -103,7 +103,7 @@ public class AugustusAutoOpBlueFront extends LinearOpMode {
 
         feeders.stop();
 
-        driveBase.moveForward(driveBase.HALF_POWER_FRACTION, 750);
+        driveBase.moveForward(driveBase.HALF_POWER_FRACTION, 700);
         driveBase.stop();
         sleep(250);
 
@@ -111,6 +111,14 @@ public class AugustusAutoOpBlueFront extends LinearOpMode {
         driveBase.stop();
         sleep(250);
 
+        // Turn on Yeeters
+        yeeters.toggleYeeters();
+        timer.reset();
+        while (timer.seconds() < 1.0) {
+            webcam.loop(dashboardTelemetry);
+            yeeters.loop(gamepad1, dashboardTelemetry, webcam.getTargetDistance()); // Big number to shoot far
+            dashboardTelemetry.update();
+        }
         feeders.enableFeeders(true);
 
         timer.reset();
@@ -130,7 +138,7 @@ public class AugustusAutoOpBlueFront extends LinearOpMode {
         sleep(250);
         feeders.enableFeeders(false);
 
-        driveBase.strafeLeft(driveBase.HALF_POWER_FRACTION, 625);
+        driveBase.strafeLeft(driveBase.HALF_POWER_FRACTION, 675);
         driveBase.stop();
         sleep(250);
 
