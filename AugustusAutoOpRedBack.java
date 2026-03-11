@@ -47,12 +47,12 @@ public class AugustusAutoOpRedBack extends LinearOpMode {
         yeeters.toggleYeeters();
 
         // Move to good shooting distance
-        driveBase.moveForward(driveBase.SLOW_POWER_FRACTION, 325);
+        driveBase.moveForward(driveBase.SLOW_POWER_FRACTION, 350);
         driveBase.stop();
         sleep(250);
 
         // Rotate toward the goal
-        driveBase.rotateRight(driveBase.SLOW_POWER_FRACTION, 275);
+        driveBase.rotateRight(driveBase.SLOW_POWER_FRACTION, 250);
         driveBase.stop();
         sleep(250);
 
@@ -76,8 +76,10 @@ public class AugustusAutoOpRedBack extends LinearOpMode {
             dashboardTelemetry.update();
         }
 
-        // Turn off Feeders
+        // Turn off Feeders and Yeeters
         feeders.stop();
+        intake.stop();
+        yeeters.toggleYeeters();
 
         //Move to collect the balls
         driveBase.moveForward(driveBase.HALF_POWER_FRACTION, 575);
@@ -91,6 +93,7 @@ public class AugustusAutoOpRedBack extends LinearOpMode {
 
         //pick up balls
         feeders.enableFeeders(false);
+        intake.enableIntake();
 
         //Move back
         driveBase.moveBackward(driveBase.SLOW_POWER_FRACTION, 1100);
@@ -98,30 +101,36 @@ public class AugustusAutoOpRedBack extends LinearOpMode {
         sleep(250);
 
         driveBase.moveForward(driveBase.HALF_POWER_FRACTION, 300);
-        driveBase.stop();
-        sleep(250);
 
         feeders.stop();
+        intake.stop();
 
-        driveBase.moveForward(driveBase.HALF_POWER_FRACTION, 625);
+        driveBase.moveForward(driveBase.HALF_POWER_FRACTION, 550);
         driveBase.stop();
         sleep(250);
 
-        driveBase.rotateRight(driveBase.HALF_POWER_FRACTION, 1160);
+        driveBase.rotateRight(driveBase.HALF_POWER_FRACTION, 1100);
         driveBase.stop();
         sleep(250);
 
-        driveBase.moveBackward(driveBase.HALF_POWER_FRACTION, 300);
+        driveBase.moveBackward(driveBase.SLOW_POWER_FRACTION, 750);
         driveBase.stop();
-        sleep(1000);
 
         // Shoot second volley
+        yeeters.toggleYeeters();
+        timer.reset();
+        while (timer.seconds() < 2.0) {
+            webcam.loop(dashboardTelemetry);
+            yeeters.loop(gamepad1, dashboardTelemetry, targetDistance - 5); // Big number to shoot far
+            dashboardTelemetry.update();
+        }
         feeders.enableFeeders(true);
+        intake.enableIntake();
 
         timer.reset();
         while (timer.seconds() < 3.0) {
             webcam.loop(dashboardTelemetry);
-            yeeters.loop(gamepad1, dashboardTelemetry, targetDistance);
+            yeeters.loop(gamepad1, dashboardTelemetry, targetDistance - 5);
             dashboardTelemetry.update();
         }
         driveBase.moveForward(driveBase.HALF_POWER_FRACTION, 450);
