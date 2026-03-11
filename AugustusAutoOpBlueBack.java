@@ -98,11 +98,9 @@ public class AugustusAutoOpBlueBack extends LinearOpMode {
         //Move back
         driveBase.moveBackward(driveBase.SLOW_POWER_FRACTION, 1200);
         driveBase.stop();
-        sleep(250);
+        sleep(1000);
 
         driveBase.moveForward(driveBase.HALF_POWER_FRACTION, 300);
-        driveBase.stop();
-        sleep(250);
 
         feeders.stop();
         intake.stop();
@@ -111,11 +109,11 @@ public class AugustusAutoOpBlueBack extends LinearOpMode {
         driveBase.stop();
         sleep(250);
 
-        driveBase.rotateLeft(driveBase.HALF_POWER_FRACTION, 875);
+        driveBase.rotateLeft(driveBase.HALF_POWER_FRACTION, 775);
         driveBase.stop();
         sleep(250);
 
-        driveBase.moveBackward(driveBase.HALF_POWER_FRACTION, 215);
+        driveBase.moveBackward(driveBase.SLOW_POWER_FRACTION, 650);
         driveBase.stop();
         sleep(250);
 
@@ -124,7 +122,7 @@ public class AugustusAutoOpBlueBack extends LinearOpMode {
         timer.reset();
         while (timer.seconds() < 2.0) {
             webcam.loop(dashboardTelemetry);
-            yeeters.loop(gamepad1, dashboardTelemetry, targetDistance); // Big number to shoot far
+            yeeters.loop(gamepad1, dashboardTelemetry, targetDistance - 5); // Big number to shoot far
             dashboardTelemetry.update();
         }
         feeders.enableFeeders(true);
@@ -133,7 +131,7 @@ public class AugustusAutoOpBlueBack extends LinearOpMode {
         timer.reset();
         while (timer.seconds() < 3.0) {
             webcam.loop(dashboardTelemetry);
-            yeeters.loop(gamepad1, dashboardTelemetry, targetDistance);
+            yeeters.loop(gamepad1, dashboardTelemetry, targetDistance - 5);
             dashboardTelemetry.update();
         }
         driveBase.moveForward(driveBase.HALF_POWER_FRACTION, 450);
