@@ -20,9 +20,11 @@ public class DriveBase {
     private DcMotorEx rightFront = null;
     private DcMotorEx rightBack = null;
 
+    /*
     private double tar_pos_x;
     private double tar_pos_y;
     private double tar_angle;
+    */
 
     public DriveBase(HardwareMap hardwareMap) {
         // Get motors from hardware map
@@ -54,6 +56,7 @@ public class DriveBase {
         }
 
         // Hold position
+        /*
         if (gamepad.leftTriggerWasPressed()){
             tar_pos_x = cur_pos_x;
             tar_pos_y = cur_pos_y;
@@ -63,6 +66,7 @@ public class DriveBase {
             odoMove(tar_pos_x, tar_pos_y, tar_angle, cur_pos_x, cur_pos_y, cur_angle);
             return; // Skip rest if we are holding position
         }
+        */
 
         // Auto aim
         if (gamepad.b && Math.abs(targetBearing) > 0.5 && Math.abs(targetBearing) < 180) {
