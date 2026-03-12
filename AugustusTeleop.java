@@ -16,7 +16,7 @@ public class AugustusTeleop extends OpMode {
     private Intake intake = null;
     private Feeders feeders = null;
     private Yeeters yeeters = null;
-    private Odometry odometry = null;
+    //private Odometry odometry = null;
 
     private FtcDashboard dashboard = null;
     private Telemetry dashboardTelemetry = null;
@@ -31,7 +31,7 @@ public class AugustusTeleop extends OpMode {
         feeders = new Feeders(hardwareMap);
         yeeters = new Yeeters(hardwareMap);
         webcam = new Webcam(hardwareMap, telemetry);
-        odometry = new Odometry(hardwareMap);
+        //odometry = new Odometry(hardwareMap);
 
         //Get dashboard and T instances
         dashboard = FtcDashboard.getInstance();
@@ -49,12 +49,14 @@ public class AugustusTeleop extends OpMode {
         double cur_pos_y = 0;
         double cur_angle = 0;
 
+        /*
         if (gamepad1.left_trigger>.8){
             odometry.loop(dashboardTelemetry);
             cur_pos_x = odometry.cur_pos_x();
             cur_pos_y = odometry.cur_pos_y();
             cur_angle = odometry.cur_angle();
         }
+        */
 
         driveBase.loop(gamepad1, dashboardTelemetry, webcam.getTargetBearing(), cur_pos_x, cur_pos_y, cur_angle);
 
