@@ -56,7 +56,7 @@ public class AugustusAutoOpBlueFront extends LinearOpMode {
 
         // Turn on Yeeters
         timer.reset();
-        while (timer.seconds() < 1.0) {
+        while (timer.seconds() < 0.75) {
             webcam.loop(dashboardTelemetry);
             yeeters.loop(gamepad1, dashboardTelemetry, webcam.getTargetDistance()); // Big number to shoot far
             dashboardTelemetry.update();
@@ -67,7 +67,7 @@ public class AugustusAutoOpBlueFront extends LinearOpMode {
         intake.enableIntake();
         timer.reset();
 
-        while (timer.seconds() < 3.0) {
+        while (timer.seconds() < 2.25) {
             webcam.loop(dashboardTelemetry);
             yeeters.loop(gamepad1, dashboardTelemetry, webcam.getTargetDistance());
             dashboardTelemetry.update();
@@ -112,7 +112,7 @@ public class AugustusAutoOpBlueFront extends LinearOpMode {
         // Turn on Yeeters
         yeeters.toggleYeeters();
         timer.reset();
-        while (timer.seconds() < 1.0) {
+        while (timer.seconds() < 0.75) {
             webcam.loop(dashboardTelemetry);
             yeeters.loop(gamepad1, dashboardTelemetry, webcam.getTargetDistance()); // Big number to shoot far
             dashboardTelemetry.update();
@@ -121,7 +121,7 @@ public class AugustusAutoOpBlueFront extends LinearOpMode {
         intake.enableIntake();
 
         timer.reset();
-        while (timer.seconds() < 3.0) {
+        while (timer.seconds() < 2.25) {
             webcam.loop(dashboardTelemetry);
             yeeters.loop(gamepad1, dashboardTelemetry, webcam.getTargetDistance());
             dashboardTelemetry.update();
@@ -149,11 +149,6 @@ public class AugustusAutoOpBlueFront extends LinearOpMode {
 
         driveBase.rotateLeft(driveBase.HALF_POWER_FRACTION, 625);
         driveBase.stop();
-        sleep(250);
-
-        driveBase.moveForward(driveBase.HALF_POWER_FRACTION, 250);
-        driveBase.stop();
-
         feeders.stop();
         intake.stop();
     }
