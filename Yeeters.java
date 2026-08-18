@@ -19,7 +19,7 @@ public class Yeeters {
     private static final double beta = 1.65; // 160
     private static final double yeeterNearVelocity = 805;
     private static final double yeeterFarVelocity = 960;
-
+    private static final double yeeterSuperFarVelocity = 1000;
     private DcMotorEx yeeterLeft = null;
     private DcMotorEx yeeterRight = null;
     private boolean yeeterActive = false;
@@ -55,6 +55,8 @@ public class Yeeters {
 
         if (gamepad.left_bumper) {
             yeeterTargetVelocity = yeeterFarVelocity;
+        } else if (gamepad.left_trigger > 0.8) {
+            yeeterTargetVelocity = yeeterSuperFarVelocity;
         } else if (yeeterManual) {
             if (gamepad.dpadUpWasPressed()) {
                 yeeterTargetVelocity += 5;

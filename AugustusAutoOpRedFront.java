@@ -79,7 +79,7 @@ public class AugustusAutoOpRedFront extends LinearOpMode {
         driveBase.stop();
         sleep(250);
 
-        driveBase.rotateLeft(driveBase.HALF_POWER_FRACTION, 850);
+        driveBase.rotateLeft(driveBase.HALF_POWER_FRACTION, 825);
         driveBase.stop();
         sleep(250);
 
@@ -126,25 +126,26 @@ public class AugustusAutoOpRedFront extends LinearOpMode {
         feeders.stop();
         intake.stop();
 
-        driveBase.strafeLeft(driveBase.HALF_POWER_FRACTION, 1000);
+        driveBase.strafeLeft(driveBase.HALF_POWER_FRACTION, 750);
         driveBase.stop();
         sleep(250);
 
-        driveBase.rotateLeft(driveBase.HALF_POWER_FRACTION, 1000);
+        driveBase.rotateLeft(driveBase.HALF_POWER_FRACTION, 925);
         sleep(250);
         feeders.enableFeeders(false);
         intake.enableIntake();
 
-        driveBase.strafeRight(driveBase.HALF_POWER_FRACTION, 700);
+        driveBase.strafeRight(driveBase.HALF_POWER_FRACTION, 850);
         driveBase.stop();
         sleep(250);
 
-        driveBase.moveBackward(driveBase.SLOW_POWER_FRACTION, 975);
+        driveBase.moveBackward(driveBase.SLOW_POWER_FRACTION, 800);
         driveBase.stop();
         sleep(250);
 
         driveBase.rotateRight(driveBase.HALF_POWER_FRACTION, 625);
         driveBase.stop();
+        sleep(1000);
 
         feeders.stop();
         intake.stop();

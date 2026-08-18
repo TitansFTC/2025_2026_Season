@@ -52,7 +52,7 @@ public class AugustusAutoOpBlueBack extends LinearOpMode {
         sleep(250);
 
         // Rotate toward the goal
-        driveBase.rotateLeft(driveBase.SLOW_POWER_FRACTION, 215);
+        driveBase.rotateLeft(driveBase.SLOW_POWER_FRACTION, 220);
         driveBase.stop();
         sleep(250);
 
@@ -96,7 +96,7 @@ public class AugustusAutoOpBlueBack extends LinearOpMode {
         intake.enableIntake();
 
         //Move back
-        driveBase.moveBackward(driveBase.SLOW_POWER_FRACTION, 1200);
+        driveBase.moveBackward(driveBase.SLOW_POWER_FRACTION, 1300);
         driveBase.stop();
         sleep(1000);
 
@@ -105,15 +105,15 @@ public class AugustusAutoOpBlueBack extends LinearOpMode {
         feeders.stop();
         intake.stop();
 
-        driveBase.moveForward(driveBase.HALF_POWER_FRACTION, 550);
+        driveBase.moveForward(driveBase.HALF_POWER_FRACTION, 560);
         driveBase.stop();
         sleep(250);
 
-        driveBase.rotateLeft(driveBase.HALF_POWER_FRACTION, 775);
+        driveBase.rotateLeft(driveBase.HALF_POWER_FRACTION, 800);
         driveBase.stop();
         sleep(250);
 
-        driveBase.moveBackward(driveBase.SLOW_POWER_FRACTION, 650);
+        driveBase.moveBackward(driveBase.SLOW_POWER_FRACTION, 675);
         driveBase.stop();
         sleep(250);
 
